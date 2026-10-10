@@ -17,21 +17,6 @@
   --radius: 0.75rem;
 }
 
-.dark {
-  --color-bg: #16130f;
-  --color-surface: #211c17;
-  --color-surface-2: #2c261f;
-  --color-fg: #f3ead8;
-  --color-muted: #b5a48c;
-  --color-faint: #8a7b68;
-  --color-line: #3d342b;
-  --color-profit: #8fce9a;
-  --color-loss: #e39a90;
-  --color-amber: #e0c48a;
-  --color-eth: #9eb6e4;
-  color-scheme: dark;
-}
-
 @layer base {
   button:not(:disabled),
   [role="button"]:not(:disabled) {

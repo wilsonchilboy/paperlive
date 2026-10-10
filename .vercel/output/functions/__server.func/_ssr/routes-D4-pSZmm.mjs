@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DJjo_INj.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-D4-pSZmm.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -63,21 +63,6 @@ function TapeApp() {
 	const [totalPages, setTotalPages] = (0, import_react.useState)(1);
 	const [listError, setListError] = (0, import_react.useState)(null);
 	const [show, setShow] = (0, import_react.useState)(40);
-	const [dark, setDark] = (0, import_react.useState)(false);
-	(0, import_react.useEffect)(() => {
-		setDark(document.documentElement.classList.contains("dark"));
-	}, []);
-	function toggleTheme() {
-		setDark((prev) => {
-			const next = !prev;
-			document.documentElement.classList.toggle("dark", next);
-			try {
-				localStorage.setItem("pt-theme", next ? "dark" : "light");
-			} catch {}
-			document.querySelector("meta[name=\"theme-color\"]")?.setAttribute("content", next ? "#16130f" : "#f4ecd8");
-			return next;
-		});
-	}
 	(0, import_react.useEffect)(() => {
 		const handle = window.setTimeout(() => setQ(query.trim()), 300);
 		return () => window.clearTimeout(handle);
@@ -169,18 +154,12 @@ function TapeApp() {
 					})
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-				className: "mt-2 flex items-end justify-between gap-3 border-b border-line pb-5",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
+				className: "mt-2 border-b border-line pb-5",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 					className: "text-3xl font-semibold tracking-tight text-fg sm:text-4xl",
 					children: "PaperTrade Live"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-					type: "button",
-					onClick: toggleTheme,
-					"aria-pressed": dark,
-					className: "min-h-11 shrink-0 rounded-md border border-line bg-surface px-3 font-mono text-xs text-fg",
-					children: dark ? "Light" : "Dark"
-				})]
+				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 				className: "mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7",

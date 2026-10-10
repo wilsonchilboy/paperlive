@@ -16,25 +16,6 @@ export function TapeApp() {
   const [totalPages, setTotalPages] = useState(1);
   const [listError, setListError] = useState<string | null>(null);
   const [show, setShow] = useState(40);
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
-
-  function toggleTheme() {
-    setDark((prev) => {
-      const next = !prev;
-      document.documentElement.classList.toggle("dark", next);
-      try {
-        localStorage.setItem("pt-theme", next ? "dark" : "light");
-      } catch {
-        /* private mode */
-      }
-      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next ? "#16130f" : "#f4ecd8");
-      return next;
-    });
-  }
 
   useEffect(() => {
     const handle = window.setTimeout(() => setQ(query.trim()), 300);
@@ -124,16 +105,8 @@ export function TapeApp() {
           wilson
         </a>
       </p>
-      <header className="mt-2 flex items-end justify-between gap-3 border-b border-line pb-5">
+      <header className="mt-2 border-b border-line pb-5">
         <h1 className="text-3xl font-semibold tracking-tight text-fg sm:text-4xl">PaperTrade Live</h1>
-        <button
-          type="button"
-          onClick={toggleTheme}
-          aria-pressed={dark}
-          className="min-h-11 shrink-0 rounded-md border border-line bg-surface px-3 font-mono text-xs text-fg"
-        >
-          {dark ? "Light" : "Dark"}
-        </button>
       </header>
 
       <section className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7">
