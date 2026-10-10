@@ -1,5 +1,5 @@
 import { n as TSS_SERVER_FUNCTION, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-CyITLxS5.js
+//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-CV0eBIHf.js
 var createServerRpc = (serverFnMeta, splitImportFn) => {
 	const url = "/_serverFn/" + serverFnMeta.id;
 	return Object.assign(splitImportFn, {
@@ -52,6 +52,16 @@ async function pull(path) {
 	}
 	throw new Error(last);
 }
+function lastNum(values) {
+	if (!values || values.length === 0) return 0;
+	const n = values[values.length - 1];
+	return typeof n === "number" && Number.isFinite(n) ? n : 0;
+}
+function countRaw(raw) {
+	if (!raw) return 0;
+	const n = Number(raw);
+	return Number.isFinite(n) ? n : 0;
+}
 function marginalRate(paper) {
 	const tracked = num18(paper.trackedLp);
 	const cliff = num18(paper.cliff) || 2e6;
@@ -67,20 +77,24 @@ var getProtocol_createServerFn_handler = createServerRpc({
 	filename: "src/lib/live.functions.ts"
 }, (opts) => getProtocol.__executeServer(opts));
 var getProtocol = createServerFn({ method: "GET" }).handler(getProtocol_createServerFn_handler, async () => {
-	const [summary, markets] = await Promise.all([pull("/query/protocol/summary"), pull("/query/protocol/market-stats")]);
+	const [summary, history] = await Promise.all([pull("/query/protocol/summary"), pull("/query/protocol/history?interval=1h")]);
+	const totals = history.totals;
 	return {
 		at: summary.source.at,
 		block: Number(summary.source.block),
-		volume: num18(summary.activity.volume),
-		btcVolume: num18(markets.markets["0"]?.volume_24h),
-		ethVolume: num18(markets.markets["1"]?.volume_24h),
+		volume: num18(totals.volumeRaw),
+		btcVolume: lastNum(history.columns.volumeBtc),
+		ethVolume: lastNum(history.columns.volumeEth),
+		liqVolume: num18(totals.liquidationRaw),
+		trades: countRaw(totals.tradesRaw),
+		users: countRaw(totals.usersRaw),
 		paperSupply: num18(summary.paper.supply),
 		paperStaked: num18(summary.paper.staked),
-		tvl: num18(summary.balances.tvl),
+		tvl: num18(totals.tvlRaw),
 		lp: num18(summary.balances.lp),
 		margin: num18(summary.balances.margin),
 		opens: summary.activity.open,
-		fees: num18(summary.fees.lifetime),
+		fees: num18(totals.rewardsRaw),
 		rate: marginalRate(summary.paper),
 		tail: num18(summary.paper.tailProgress)
 	};

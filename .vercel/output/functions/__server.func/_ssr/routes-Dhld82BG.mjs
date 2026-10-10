@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-D-MlpH9d.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-Dhld82BG.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -162,12 +162,37 @@ function TapeApp() {
 				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-				className: "mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7",
+				className: "mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
 						label: "Volume",
 						value: proto ? "$" + compact(proto.volume) : "—",
-						hint: proto ? "BTC $" + compact(proto.btcVolume) + " · ETH $" + compact(proto.ethVolume) : "Waiting for the exchange"
+						hint: proto ? "BTC $" + compact(proto.btcVolume) + " · ETH $" + compact(proto.ethVolume) : "From the stats page"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
+						label: "Liq. Volume",
+						value: proto ? "$" + compact(proto.liqVolume) : "—",
+						hint: "Liquidated notional"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
+						label: "Trades",
+						value: proto ? proto.trades.toLocaleString() : "—",
+						hint: "Closed and liquidated"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
+						label: "Users",
+						value: proto ? proto.users.toLocaleString() : "—",
+						hint: "Accounts"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
+						label: "Rewards",
+						value: proto ? "$" + compact(proto.fees) : "—",
+						hint: "Staking rewards"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
+						label: "TVL",
+						value: proto ? "$" + compact(proto.tvl) : "—",
+						hint: "Total value locked"
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
 						label: "PAPER supply",
@@ -180,26 +205,6 @@ function TapeApp() {
 						value: proto ? proto.rate.toFixed(proto.rate >= 10 ? 1 : 2) : "—",
 						hint: proto ? proto.rate.toFixed(1) + "% of launch" : "PAPER per $1 lost",
 						unit: proto ? "/ $1" : void 0
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
-						label: "TVL",
-						value: proto ? "$" + compact(proto.tvl) : "—",
-						hint: "Balances"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
-						label: "LP",
-						value: proto ? "$" + compact(proto.lp) : "—",
-						hint: proto ? "Tail $" + compact(proto.tail) : "Tracked pool"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
-						label: "Open margin",
-						value: proto ? "$" + compact(proto.margin) : "—",
-						hint: proto ? proto.opens.toLocaleString() + " open" : ""
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Stat, {
-						label: "Staker fees",
-						value: proto ? "$" + compact(proto.fees) : "—",
-						hint: "Lifetime USDC"
 					})
 				]
 			}),
@@ -305,7 +310,7 @@ function TapeApp() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("footer", {
 				className: "mt-10 border-t border-line pt-4 font-mono text-xs leading-relaxed text-faint",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, PAPER supply, and wallet profit are the exchange’s own figures. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL." })
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL." })
 			})
 		]
 	});

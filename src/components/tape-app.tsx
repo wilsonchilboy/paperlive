@@ -109,16 +109,21 @@ export function TapeApp() {
         <h1 className="text-3xl font-semibold tracking-tight text-fg sm:text-4xl">PaperTrade Live</h1>
       </header>
 
-      <section className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7">
+      <section className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
         <Stat
           label="Volume"
           value={proto ? "$" + compact(proto.volume) : "—"}
           hint={
             proto
               ? "BTC $" + compact(proto.btcVolume) + " · ETH $" + compact(proto.ethVolume)
-              : "Waiting for the exchange"
+              : "From the stats page"
           }
         />
+        <Stat label="Liq. Volume" value={proto ? "$" + compact(proto.liqVolume) : "—"} hint="Liquidated notional" />
+        <Stat label="Trades" value={proto ? proto.trades.toLocaleString() : "—"} hint="Closed and liquidated" />
+        <Stat label="Users" value={proto ? proto.users.toLocaleString() : "—"} hint="Accounts" />
+        <Stat label="Rewards" value={proto ? "$" + compact(proto.fees) : "—"} hint="Staking rewards" />
+        <Stat label="TVL" value={proto ? "$" + compact(proto.tvl) : "—"} hint="Total value locked" />
         <Stat
           label="PAPER supply"
           value={proto ? paperAmt(proto.paperSupply).replace(" PAPER", "") : "—"}
@@ -131,10 +136,6 @@ export function TapeApp() {
           hint={proto ? proto.rate.toFixed(1) + "% of launch" : "PAPER per $1 lost"}
           unit={proto ? "/ $1" : undefined}
         />
-        <Stat label="TVL" value={proto ? "$" + compact(proto.tvl) : "—"} hint="Balances" />
-        <Stat label="LP" value={proto ? "$" + compact(proto.lp) : "—"} hint={proto ? "Tail $" + compact(proto.tail) : "Tracked pool"} />
-        <Stat label="Open margin" value={proto ? "$" + compact(proto.margin) : "—"} hint={proto ? proto.opens.toLocaleString() + " open" : ""} />
-        <Stat label="Staker fees" value={proto ? "$" + compact(proto.fees) : "—"} hint="Lifetime USDC" />
       </section>
       {protoError && <p className="mt-2 text-sm text-loss">{protoError}</p>}
 
@@ -200,7 +201,7 @@ export function TapeApp() {
 
       <footer className="mt-10 border-t border-line pt-4 font-mono text-xs leading-relaxed text-faint">
         <p>
-          Volume, PAPER supply, and wallet profit are the exchange’s own figures. $PAPER earned is the sum of
+          Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. $PAPER earned is the sum of
           mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M,
           then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently
           has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL.

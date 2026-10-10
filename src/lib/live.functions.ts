@@ -8,6 +8,9 @@ export type LiveProtocol = {
   volume: number;
   btcVolume: number;
   ethVolume: number;
+  liqVolume: number;
+  trades: number;
+  users: number;
   paperSupply: number;
   paperStaked: number;
   tvl: number;
@@ -114,7 +117,29 @@ type Summary = {
   };
 };
 
-type Markets = { ok: boolean; markets: Record<string, { volume_24h: string }> };
+type History = {
+  columns: { volumeBtc?: number[]; volumeEth?: number[] };
+  totals: {
+    tvlRaw: string | null;
+    rewardsRaw: string | null;
+    volumeRaw: string | null;
+    liquidationRaw: string | null;
+    tradesRaw: string | null;
+    usersRaw: string | null;
+  };
+};
+
+function lastNum(values: number[] | undefined): number {
+  if (!values || values.length === 0) return 0;
+  const n = values[values.length - 1];
+  return typeof n === "number" && Number.isFinite(n) ? n : 0;
+}
+
+function countRaw(raw: string | null | undefined): number {
+  if (!raw) return 0;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : 0;
+}
 
 function marginalRate(paper: Summary["paper"]): number {
   const tracked = num18(paper.trackedLp);
@@ -127,23 +152,27 @@ function marginalRate(paper: Summary["paper"]): number {
 }
 
 export const getProtocol = createServerFn({ method: "GET" }).handler(async (): Promise<LiveProtocol> => {
-  const [summary, markets] = await Promise.all([
+  const [summary, history] = await Promise.all([
     pull<Summary>("/query/protocol/summary"),
-    pull<Markets>("/query/protocol/market-stats"),
+    pull<History>("/query/protocol/history?interval=1h"),
   ]);
+  const totals = history.totals;
   return {
     at: summary.source.at,
     block: Number(summary.source.block),
-    volume: num18(summary.activity.volume),
-    btcVolume: num18(markets.markets["0"]?.volume_24h),
-    ethVolume: num18(markets.markets["1"]?.volume_24h),
+    volume: num18(totals.volumeRaw),
+    btcVolume: lastNum(history.columns.volumeBtc),
+    ethVolume: lastNum(history.columns.volumeEth),
+    liqVolume: num18(totals.liquidationRaw),
+    trades: countRaw(totals.tradesRaw),
+    users: countRaw(totals.usersRaw),
     paperSupply: num18(summary.paper.supply),
     paperStaked: num18(summary.paper.staked),
-    tvl: num18(summary.balances.tvl),
+    tvl: num18(totals.tvlRaw),
     lp: num18(summary.balances.lp),
     margin: num18(summary.balances.margin),
     opens: summary.activity.open,
-    fees: num18(summary.fees.lifetime),
+    fees: num18(totals.rewardsRaw),
     rate: marginalRate(summary.paper),
     tail: num18(summary.paper.tailProgress),
   };
