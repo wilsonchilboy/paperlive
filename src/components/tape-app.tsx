@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getProtocol, getWalletBatch, type LiveAccount, type LiveProtocol } from "@/lib/live.functions";
 import { EXPLORER, paperAmt, sharePct, shortAddr, usd } from "@/lib/papertrade";
 
@@ -93,7 +93,8 @@ export function TapeApp() {
   const stakePct = proto && proto.paperSupply > 0 ? (proto.paperStaked / proto.paperSupply) * 100 : 0;
 
   return (
-    <div className="mx-auto min-h-screen max-w-6xl px-4 pb-16 pt-3 sm:px-6">
+    <div className="relative mx-auto min-h-screen max-w-6xl px-4 pb-16 pt-3 sm:px-6">
+      <WaterField />
       <p className="text-right font-mono text-xs text-muted">
         build by:{" "}
         <a
@@ -155,7 +156,7 @@ export function TapeApp() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search wallet or name"
-            className="min-h-11 w-full rounded-md border border-line bg-surface px-3 font-mono text-sm text-fg outline-none placeholder:text-faint"
+            className="min-h-11 w-full rounded-md border border-line bg-surface/70 px-3 font-mono text-sm text-fg outline-none backdrop-blur-md placeholder:text-faint"
           />
         </label>
       </div>
@@ -169,7 +170,7 @@ export function TapeApp() {
             {sort === "profit" ? " · profit down" : " · loss down"}
           </p>
         </div>
-        <ul className="divide-y divide-line rounded-xl border border-line bg-surface">
+        <ul className="glass divide-y divide-line/40 rounded-xl border">
           <li className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-end gap-x-2 px-3 py-2 font-mono text-xs tracking-wide text-faint uppercase sm:gap-x-4 sm:px-4">
             <span className="pl-8">Wallet</span>
             <span className="text-center">PnL</span>
@@ -190,7 +191,7 @@ export function TapeApp() {
         {accounts.length > show && (
           <button
             type="button"
-            className="mt-3 min-h-11 w-full rounded-md border border-line bg-surface text-sm text-fg"
+            className="glass mt-3 min-h-11 w-full rounded-md border text-sm text-fg"
             onClick={() => setShow((n) => n + 40)}
           >
             Show more · {show.toLocaleString()} of {accounts.length.toLocaleString()}
@@ -211,6 +212,116 @@ export function TapeApp() {
   );
 }
 
+function WaterField() {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const el = canvas;
+    const g = ctx;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let frame = 0;
+    const lobes = [
+      { ox: 0.18, oy: 0.62, rx: 0.22, ry: 0.16, rgb: "186, 140, 255", sp: 0.55, ph: 0.2 },
+      { ox: 0.38, oy: 0.7, rx: 0.28, ry: 0.18, rgb: "120, 170, 255", sp: 0.42, ph: 1.1 },
+      { ox: 0.62, oy: 0.66, rx: 0.3, ry: 0.2, rgb: "168, 120, 255", sp: 0.48, ph: 2.2 },
+      { ox: 0.82, oy: 0.6, rx: 0.2, ry: 0.14, rgb: "130, 190, 255", sp: 0.6, ph: 0.7 },
+      { ox: 0.5, oy: 0.78, rx: 0.42, ry: 0.12, rgb: "200, 150, 255", sp: 0.36, ph: 1.8 },
+      { ox: 0.28, oy: 0.52, rx: 0.1, ry: 0.08, rgb: "230, 170, 255", sp: 0.7, ph: 2.8 },
+      { ox: 0.74, oy: 0.5, rx: 0.12, ry: 0.09, rgb: "150, 190, 255", sp: 0.66, ph: 0.4 },
+    ];
+    const drops = Array.from({ length: 16 }, (_, i) => ({
+      x: (i * 0.061 + 0.08) % 1,
+      y: 0.35 + (i % 5) * 0.1,
+      r: 3 + (i % 4),
+      sp: 0.15 + (i % 5) * 0.04,
+      ph: i * 0.7,
+    }));
+
+    function resize() {
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      el.width = Math.floor(window.innerWidth * dpr);
+      el.height = Math.floor(window.innerHeight * dpr);
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function draw(now: number) {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const t = reduced ? 0 : now / 1000;
+      g.clearRect(0, 0, w, h);
+      const wash = g.createLinearGradient(0, 0, w, h);
+      wash.addColorStop(0, "#f8d7f6");
+      wash.addColorStop(0.46, "#e7d4ff");
+      wash.addColorStop(1, "#b9dbff");
+      g.fillStyle = wash;
+      g.fillRect(0, 0, w, h);
+
+      g.globalCompositeOperation = "screen";
+      for (const lobe of lobes) {
+        const x = (lobe.ox + Math.sin(t * lobe.sp + lobe.ph) * 0.045) * w;
+        const y = (lobe.oy + Math.cos(t * lobe.sp * 0.8 + lobe.ph) * 0.035) * h;
+        const pulse = 1 + Math.sin(t * 0.9 + lobe.ph) * 0.08;
+        const rx = lobe.rx * Math.min(w, h) * pulse;
+        const ry = lobe.ry * Math.min(w, h) * (1.05 - pulse * 0.05);
+        g.save();
+        g.translate(x, y);
+        g.rotate(Math.sin(t * 0.25 + lobe.ph) * 0.35);
+        g.scale(1, ry / rx);
+        const glow = g.createRadialGradient(0, 0, rx * 0.05, 0, 0, rx);
+        glow.addColorStop(0, `rgba(255,255,255,0.7)`);
+        glow.addColorStop(0.22, `rgba(${lobe.rgb},0.62)`);
+        glow.addColorStop(0.55, `rgba(${lobe.rgb},0.28)`);
+        glow.addColorStop(1, `rgba(${lobe.rgb},0)`);
+        g.fillStyle = glow;
+        g.beginPath();
+        g.arc(0, 0, rx, 0, Math.PI * 2);
+        g.fill();
+        g.restore();
+        g.save();
+        g.translate(x, y);
+        g.rotate(Math.sin(t * lobe.sp + lobe.ph) * 1.1);
+        g.fillStyle = `rgba(${lobe.rgb},0.28)`;
+        g.beginPath();
+        g.ellipse(rx * 0.55, 0, rx * 0.72, ry * 0.28, 0, 0, Math.PI * 2);
+        g.fill();
+        g.restore();
+      }
+
+      g.globalCompositeOperation = "source-over";
+      for (const drop of drops) {
+        const y = ((drop.y - t * drop.sp) % 1 + 1) % 1;
+        const x = (drop.x + Math.sin(t * 0.8 + drop.ph) * 0.015) * w;
+        const py = y * h;
+        g.beginPath();
+        g.fillStyle = "rgba(255,255,255,0.55)";
+        g.arc(x, py, drop.r, 0, Math.PI * 2);
+        g.fill();
+        g.beginPath();
+        g.strokeStyle = "rgba(140,170,255,0.45)";
+        g.lineWidth = 1;
+        g.arc(x, py, drop.r + 1.5, 0, Math.PI * 2);
+        g.stroke();
+      }
+
+      if (!reduced) frame = window.requestAnimationFrame(draw);
+    }
+
+    resize();
+    frame = window.requestAnimationFrame(draw);
+    window.addEventListener("resize", resize);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return <canvas ref={ref} className="pointer-events-none fixed inset-0 -z-10 h-screen w-screen" aria-hidden />;
+}
+
 function mergeHead(prev: LiveAccount[], fresh: LiveAccount[], sort: Sort): LiveAccount[] {
   if (fresh.length === 0) return prev;
   const freshIds = new Set(fresh.map((row) => row.address));
@@ -229,7 +340,7 @@ function WalletRow({ account, rank, supply }: { account: LiveAccount; rank: numb
         href={EXPLORER + "/address/" + account.address}
         target="_blank"
         rel="noreferrer"
-        className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 px-3 py-3 hover:bg-surface-2 sm:gap-x-4 sm:px-4"
+        className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 px-3 py-3 hover:bg-white/40 sm:gap-x-4 sm:px-4"
       >
         <span className="flex min-w-0 items-baseline gap-2">
           <span className="w-6 shrink-0 font-mono text-xs text-faint">{rank}</span>
@@ -276,7 +387,7 @@ function Stat({
 }) {
   const color = tone === "amber" ? "text-amber" : "text-fg";
   return (
-    <div className="rounded-lg border border-line bg-surface px-2.5 py-2">
+    <div className="glass rounded-lg border px-2.5 py-2">
       <p className="text-[11px] leading-none text-faint">{label}</p>
       <p className={"mt-1 font-mono text-lg font-medium leading-none tracking-tight sm:text-xl " + color}>
         {value}
@@ -301,7 +412,8 @@ function SortButton({
       type="button"
       onClick={onClick}
       className={
-        "min-h-11 rounded-md px-3 font-mono text-xs " + (active ? "bg-amber text-surface" : "bg-surface text-muted")
+        "min-h-11 rounded-md px-3 font-mono text-xs " +
+        (active ? "bg-amber text-on-accent shadow-md" : "glass border text-muted")
       }
     >
       {children}

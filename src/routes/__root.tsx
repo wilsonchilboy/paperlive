@@ -14,7 +14,7 @@ export const Route = createRootRoute({
         content:
           "Onchain blotter for Papertrade on HyperEVM. Highest realized profit and highest realized loss, read from close events.",
       },
-      { name: "theme-color", content: "#f4ecd8" },
+      { name: "theme-color", content: "#e7c6f4" },
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },

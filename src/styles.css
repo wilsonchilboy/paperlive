@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #f4ecd8;
-  --color-surface: #faf6ed;
-  --color-surface-2: #ede5d0;
-  --color-fg: #2a2520;
-  --color-muted: #7a7060;
-  --color-faint: #938978;
-  --color-line: #e0d5c0;
-  --color-profit: #2d5f3a;
-  --color-loss: #8c3d32;
-  --color-amber: #7a6235;
-  --color-eth: #2a4a81;
+  --color-bg: #f3c9ef;
+  --color-surface: #ffffff;
+  --color-surface-2: #f4e9ff;
+  --color-fg: #2c2458;
+  --color-muted: #655b86;
+  --color-faint: #8a80a8;
+  --color-line: #ffffff;
+  --color-profit: #1c8a62;
+  --color-loss: #c43b6e;
+  --color-amber: #6d46e6;
+  --color-on-accent: #fbf8ff;
+  --color-eth: #3d6fd0;
   --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --radius: 0.75rem;
@@ -25,7 +26,7 @@
 
   html,
   body {
-    background: var(--color-bg);
+    background: linear-gradient(115deg, #f7d4f4 0%, #e4d4ff 48%, #b7d9ff 100%);
     color: var(--color-fg);
     font-family: var(--font-sans);
   }
@@ -33,6 +34,13 @@
   body {
     min-height: 100vh;
   }
+}
+
+.glass {
+  background: rgb(255 255 255 / 0.58);
+  border-color: rgb(255 255 255 / 0.72);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 12px 40px rgb(96 72 170 / 0.12);
 }
 
 @keyframes tape-pulse {
