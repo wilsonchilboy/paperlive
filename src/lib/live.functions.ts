@@ -313,3 +313,58 @@ export const getWalletBatch = createServerFn({ method: "POST" })
       accounts,
     };
   });
+
+export type TradeScan = {
+  trades: number;
+  profit: number;
+  loss: number;
+  profitCount: number;
+  lossCount: number;
+  nextCursor: string | null;
+};
+
+type TradePage = {
+  items: { adjustedPnlRaw: string }[];
+  nextCursor: string | null;
+};
+
+export const scanTrades = createServerFn({ method: "POST" })
+  .validator((data: { address?: string; cursor?: string | null }) => {
+    const address = String(data?.address ?? "")
+      .trim()
+      .toLowerCase();
+    if (!/^0x[0-9a-f]{40}$/.test(address)) throw new Error("Bad address");
+    const cursor = String(data?.cursor ?? "")
+      .trim()
+      .slice(0, 2048);
+    return { address, cursor };
+  })
+  .handler(async ({ data }): Promise<TradeScan> => {
+    let cursor = data.cursor;
+    let trades = 0;
+    let profit = 0;
+    let loss = 0;
+    let profitCount = 0;
+    let lossCount = 0;
+    let next: string | null = cursor || null;
+    for (let step = 0; step < 4; step++) {
+      const params: Record<string, string> = { limit: "75" };
+      if (next) params.cursor = next;
+      const page = await pull<TradePage>("/query/accounts/" + data.address + "/trades?" + qs(params));
+      for (const item of page.items ?? []) {
+        const pnl = num18(item.adjustedPnlRaw);
+        trades += 1;
+        if (pnl > 0) {
+          profit += pnl;
+          profitCount += 1;
+        } else if (pnl < 0) {
+          loss += pnl;
+          lossCount += 1;
+        }
+      }
+      const following = page.nextCursor && page.nextCursor !== next ? page.nextCursor : null;
+      next = following;
+      if (!next) break;
+    }
+    return { trades, profit, loss, profitCount, lossCount, nextCursor: next };
+  });

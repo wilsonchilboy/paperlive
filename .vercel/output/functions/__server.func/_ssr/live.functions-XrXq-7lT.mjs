@@ -1,5 +1,5 @@
 import { n as TSS_SERVER_FUNCTION, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-CV0eBIHf.js
+//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-XrXq-7lT.js
 var createServerRpc = (serverFnMeta, splitImportFn) => {
 	const url = "/_serverFn/" + serverFnMeta.id;
 	return Object.assign(splitImportFn, {
@@ -207,5 +207,52 @@ var getWalletBatch = createServerFn({ method: "POST" }).validator((data) => {
 		accounts
 	};
 });
+var scanTrades_createServerFn_handler = createServerRpc({
+	id: "045afd013b111a4dee761a73617a535295a92a0f8b3094501f46e7e5fb82b4f0",
+	name: "scanTrades",
+	filename: "src/lib/live.functions.ts"
+}, (opts) => scanTrades.__executeServer(opts));
+var scanTrades = createServerFn({ method: "POST" }).validator((data) => {
+	const address = String(data?.address ?? "").trim().toLowerCase();
+	if (!/^0x[0-9a-f]{40}$/.test(address)) throw new Error("Bad address");
+	return {
+		address,
+		cursor: String(data?.cursor ?? "").trim().slice(0, 2048)
+	};
+}).handler(scanTrades_createServerFn_handler, async ({ data }) => {
+	let cursor = data.cursor;
+	let trades = 0;
+	let profit = 0;
+	let loss = 0;
+	let profitCount = 0;
+	let lossCount = 0;
+	let next = cursor || null;
+	for (let step = 0; step < 4; step++) {
+		const params = { limit: "75" };
+		if (next) params.cursor = next;
+		const page = await pull("/query/accounts/" + data.address + "/trades?" + qs(params));
+		for (const item of page.items ?? []) {
+			const pnl = num18(item.adjustedPnlRaw);
+			trades += 1;
+			if (pnl > 0) {
+				profit += pnl;
+				profitCount += 1;
+			} else if (pnl < 0) {
+				loss += pnl;
+				lossCount += 1;
+			}
+		}
+		next = page.nextCursor && page.nextCursor !== next ? page.nextCursor : null;
+		if (!next) break;
+	}
+	return {
+		trades,
+		profit,
+		loss,
+		profitCount,
+		lossCount,
+		nextCursor: next
+	};
+});
 //#endregion
-export { getProtocol_createServerFn_handler, getWalletBatch_createServerFn_handler };
+export { getProtocol_createServerFn_handler, getWalletBatch_createServerFn_handler, scanTrades_createServerFn_handler };

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getProtocol, getWalletBatch, type LiveAccount, type LiveProtocol } from "@/lib/live.functions";
+import { getProtocol, getWalletBatch, scanTrades, type LiveAccount, type LiveProtocol, type TradeScan } from "@/lib/live.functions";
 import { EXPLORER, paperAmt, sharePct, shortAddr, usd } from "@/lib/papertrade";
 
 type Sort = "profit" | "loss";
@@ -16,6 +16,7 @@ export function TapeApp() {
   const [totalPages, setTotalPages] = useState(1);
   const [listError, setListError] = useState<string | null>(null);
   const [show, setShow] = useState(40);
+  const [selected, setSelected] = useState<LiveAccount | null>(null);
 
   useEffect(() => {
     const handle = window.setTimeout(() => setQ(query.trim()), 300);
@@ -161,6 +162,13 @@ export function TapeApp() {
         </label>
       </div>
 
+      {selected && (
+        <WalletScan
+          account={accounts.find((row) => row.address === selected.address) ?? selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
+
       <section className="mt-4">
         <div className="mb-2 flex items-baseline justify-between gap-3">
           <h2 className="text-sm font-semibold tracking-wide text-fg uppercase">Every wallet</h2>
@@ -185,7 +193,14 @@ export function TapeApp() {
             </li>
           )}
           {visible.map((account, index) => (
-            <WalletRow key={account.address} account={account} rank={index + 1} supply={proto?.paperSupply ?? 0} />
+            <WalletRow
+              key={account.address}
+              account={account}
+              rank={index + 1}
+              supply={proto?.paperSupply ?? 0}
+              active={selected?.address === account.address}
+              onSelect={() => setSelected((current) => (current?.address === account.address ? null : account))}
+            />
           ))}
         </ul>
         {accounts.length > show && (
@@ -331,16 +346,31 @@ function mergeHead(prev: LiveAccount[], fresh: LiveAccount[], sort: Sort): LiveA
   return merged;
 }
 
-function WalletRow({ account, rank, supply }: { account: LiveAccount; rank: number; supply: number }) {
+function WalletRow({
+  account,
+  rank,
+  supply,
+  active,
+  onSelect,
+}: {
+  account: LiveAccount;
+  rank: number;
+  supply: number;
+  active: boolean;
+  onSelect: () => void;
+}) {
   const win = account.pnl >= 0;
   const label = account.name ? account.name + " · " + shortAddr(account.address) : shortAddr(account.address);
   return (
     <li>
-      <a
-        href={EXPLORER + "/address/" + account.address}
-        target="_blank"
-        rel="noreferrer"
-        className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 px-3 py-3 hover:bg-white/40 sm:gap-x-4 sm:px-4"
+      <button
+        type="button"
+        onClick={onSelect}
+        aria-pressed={active}
+        className={
+          "grid w-full min-h-11 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 px-3 py-3 text-left hover:bg-white/40 sm:gap-x-4 sm:px-4 " +
+          (active ? "bg-white/50" : "")
+        }
       >
         <span className="flex min-w-0 items-baseline gap-2">
           <span className="w-6 shrink-0 font-mono text-xs text-faint">{rank}</span>
@@ -367,8 +397,121 @@ function WalletRow({ account, rank, supply }: { account: LiveAccount; rank: numb
           <span className="font-mono text-xs text-amber tabular-nums sm:w-36 sm:text-right sm:text-sm">{account.paperLabel}</span>
           <span className="font-mono text-xs tabular-nums text-fg sm:w-40 sm:text-right sm:text-sm">{account.stakedLabel}</span>
         </span>
-      </a>
+      </button>
     </li>
+  );
+}
+
+function WalletScan({ account, onClose }: { account: LiveAccount; onClose: () => void }) {
+  const [trades, setTrades] = useState(0);
+  const [profit, setProfit] = useState(0);
+  const [loss, setLoss] = useState(0);
+  const [profitCount, setProfitCount] = useState(0);
+  const [lossCount, setLossCount] = useState(0);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let dead = false;
+    let cursor: string | null = null;
+    setTrades(0);
+    setProfit(0);
+    setLoss(0);
+    setProfitCount(0);
+    setLossCount(0);
+    setDone(false);
+    setError(null);
+    const run = async () => {
+      let next: string | null = null;
+      let total = 0;
+      let won = 0;
+      let lost = 0;
+      let wins = 0;
+      let losses = 0;
+      do {
+        const page: TradeScan = await scanTrades({ data: { address: account.address, cursor: next } });
+        if (dead) return;
+        total += page.trades;
+        won += page.profit;
+        lost += page.loss;
+        wins += page.profitCount;
+        losses += page.lossCount;
+        next = page.nextCursor;
+        cursor = next;
+        setTrades(total);
+        setProfit(won);
+        setLoss(lost);
+        setProfitCount(wins);
+        setLossCount(losses);
+      } while (cursor);
+      if (!dead) setDone(true);
+    };
+    void run().catch((err: unknown) => {
+      if (dead) return;
+      setError(err instanceof Error ? err.message : "Scan failed");
+    });
+    return () => {
+      dead = true;
+    };
+  }, [account.address]);
+
+  const label = account.name ? account.name + " · " + shortAddr(account.address) : shortAddr(account.address);
+  return (
+    <section className="glass mt-4 rounded-xl border p-4" aria-live="polite">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="truncate font-mono text-sm text-fg">{label}</h2>
+          <a
+            href={EXPLORER + "/address/" + account.address}
+            target="_blank"
+            rel="noreferrer"
+            className="font-mono text-xs text-amber underline decoration-line underline-offset-2"
+          >
+            {account.address}
+          </a>
+        </div>
+        <button type="button" onClick={onClose} className="min-h-11 shrink-0 font-mono text-xs text-muted">
+          Close
+        </button>
+      </div>
+      <dl className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <ScanStat label="Trades" value={trades.toLocaleString()} hint={done ? "Closed and liquidated" : "Scanning"} />
+        <ScanStat label="Volume" value={"$" + compact(account.volume)} hint="All markets" />
+        <ScanStat
+          label="Profits"
+          value={usd(profit)}
+          hint={profitCount.toLocaleString() + " winning"}
+          tone="profit"
+        />
+        <ScanStat label="Losses" value={usd(loss)} hint={lossCount.toLocaleString() + " losing"} tone="loss" />
+        <ScanStat label="$PAPER" value={account.paperLabel} hint="Earned" tone="paper" />
+        <ScanStat label="$PAPER staked" value={account.stakedLabel} hint="In staking" />
+      </dl>
+      <p className="mt-3 font-mono text-xs text-faint">
+        {error ? error : done ? "Scan complete" : "Scan · " + trades.toLocaleString() + " trades"}
+      </p>
+    </section>
+  );
+}
+
+function ScanStat({
+  label,
+  value,
+  hint,
+  tone,
+}: {
+  label: string;
+  value: string;
+  hint?: string;
+  tone?: "profit" | "loss" | "paper";
+}) {
+  const color = tone === "profit" ? "text-profit" : tone === "loss" ? "text-loss" : tone === "paper" ? "text-amber" : "text-fg";
+  return (
+    <div className="rounded-lg bg-white/45 px-2.5 py-2">
+      <dt className="text-[11px] leading-none text-faint">{label}</dt>
+      <dd className={"mt-1 font-mono text-sm font-medium tabular-nums " + color}>{value}</dd>
+      {hint && <p className="mt-1 font-mono text-[11px] text-muted">{hint}</p>}
+    </div>
   );
 }
 

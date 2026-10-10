@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-BlAZ8zxT.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-C_cpmN1d.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -24,6 +24,14 @@ var getWalletBatch = createServerFn({ method: "POST" }).validator((data) => {
 		q: String(data?.q ?? "").trim().slice(0, 80)
 	};
 }).handler(createSsrRpc("cbbe9b29c95d3715b1aa83e702e1bd5e9a2bff0e57b7713a9dd70965d10968e4"));
+var scanTrades = createServerFn({ method: "POST" }).validator((data) => {
+	const address = String(data?.address ?? "").trim().toLowerCase();
+	if (!/^0x[0-9a-f]{40}$/.test(address)) throw new Error("Bad address");
+	return {
+		address,
+		cursor: String(data?.cursor ?? "").trim().slice(0, 2048)
+	};
+}).handler(createSsrRpc("045afd013b111a4dee761a73617a535295a92a0f8b3094501f46e7e5fb82b4f0"));
 var EXPLORER = "https://hyperevmscan.io";
 function shortAddr(addr) {
 	if (addr.length < 12) return addr;
@@ -63,6 +71,7 @@ function TapeApp() {
 	const [totalPages, setTotalPages] = (0, import_react.useState)(1);
 	const [listError, setListError] = (0, import_react.useState)(null);
 	const [show, setShow] = (0, import_react.useState)(40);
+	const [selected, setSelected] = (0, import_react.useState)(null);
 	(0, import_react.useEffect)(() => {
 		const handle = window.setTimeout(() => setQ(query.trim()), 300);
 		return () => window.clearTimeout(handle);
@@ -215,99 +224,108 @@ function TapeApp() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "mt-5",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col gap-3 sm:flex-row sm:items-center",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex gap-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SortButton, {
-							active: sort === "profit",
-							onClick: () => setSort("profit"),
-							children: "Highest profit"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SortButton, {
-							active: sort === "loss",
-							onClick: () => setSort("loss"),
-							children: "Highest loss"
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
-						className: "relative min-w-0 flex-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "sr-only",
-							children: "Search wallet"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-							value: query,
-							onChange: (e) => setQuery(e.target.value),
-							placeholder: "Search wallet or name",
-							className: "min-h-11 w-full rounded-md border border-line bg-surface/70 px-3 font-mono text-sm text-fg outline-none backdrop-blur-md placeholder:text-faint"
-						})]
-					})]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-					className: "mt-4",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "mb-2 flex items-baseline justify-between gap-3",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-								className: "text-sm font-semibold tracking-wide text-fg uppercase",
-								children: "Every wallet"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-								className: "font-mono text-xs text-faint",
-								children: [
-									count.toLocaleString(),
-									" accounts",
-									loadedPages < totalPages ? " · loading " + loadedPages + "/" + totalPages : "",
-									sort === "profit" ? " · profit down" : " · loss down"
-								]
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-3 sm:flex-row sm:items-center",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex gap-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SortButton, {
+								active: sort === "profit",
+								onClick: () => setSort("profit"),
+								children: "Highest profit"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SortButton, {
+								active: sort === "loss",
+								onClick: () => setSort("loss"),
+								children: "Highest loss"
 							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
-							className: "glass divide-y divide-line/40 rounded-xl border",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-									className: "grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-end gap-x-2 px-3 py-2 font-mono text-xs tracking-wide text-faint uppercase sm:gap-x-4 sm:px-4",
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+							className: "relative min-w-0 flex-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "sr-only",
+								children: "Search wallet"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+								value: query,
+								onChange: (e) => setQuery(e.target.value),
+								placeholder: "Search wallet or name",
+								className: "min-h-11 w-full rounded-md border border-line bg-surface/70 px-3 font-mono text-sm text-fg outline-none backdrop-blur-md placeholder:text-faint"
+							})]
+						})]
+					}),
+					selected && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WalletScan, {
+						account: accounts.find((row) => row.address === selected.address) ?? selected,
+						onClose: () => setSelected(null)
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+						className: "mt-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mb-2 flex items-baseline justify-between gap-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+									className: "text-sm font-semibold tracking-wide text-fg uppercase",
+									children: "Every wallet"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "font-mono text-xs text-faint",
 									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "pl-8",
-											children: "Wallet"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-center",
-											children: "PnL"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-											className: "flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "sm:w-36 sm:text-right",
-												children: "$PAPER"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "sm:w-40 sm:text-right",
-												children: "$PAPER staked"
-											})]
-										})
+										count.toLocaleString(),
+										" accounts",
+										loadedPages < totalPages ? " · loading " + loadedPages + "/" + totalPages : "",
+										sort === "profit" ? " · profit down" : " · loss down"
 									]
-								}),
-								visible.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
-									className: "px-4 py-8 text-center text-sm text-faint",
-									children: listError ?? "Loading wallets from the exchange."
-								}),
-								visible.map((account, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WalletRow, {
-									account,
-									rank: index + 1,
-									supply: proto?.paperSupply ?? 0
-								}, account.address))
-							]
-						}),
-						accounts.length > show && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							type: "button",
-							className: "glass mt-3 min-h-11 w-full rounded-md border text-sm text-fg",
-							onClick: () => setShow((n) => n + 40),
-							children: [
-								"Show more · ",
-								show.toLocaleString(),
-								" of ",
-								accounts.length.toLocaleString()
-							]
-						})
-					]
-				})]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
+								className: "glass divide-y divide-line/40 rounded-xl border",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+										className: "grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-end gap-x-2 px-3 py-2 font-mono text-xs tracking-wide text-faint uppercase sm:gap-x-4 sm:px-4",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "pl-8",
+												children: "Wallet"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-center",
+												children: "PnL"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "sm:w-36 sm:text-right",
+													children: "$PAPER"
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "sm:w-40 sm:text-right",
+													children: "$PAPER staked"
+												})]
+											})
+										]
+									}),
+									visible.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
+										className: "px-4 py-8 text-center text-sm text-faint",
+										children: listError ?? "Loading wallets from the exchange."
+									}),
+									visible.map((account, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WalletRow, {
+										account,
+										rank: index + 1,
+										supply: proto?.paperSupply ?? 0,
+										active: selected?.address === account.address,
+										onSelect: () => setSelected((current) => current?.address === account.address ? null : account)
+									}, account.address))
+								]
+							}),
+							accounts.length > show && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "button",
+								className: "glass mt-3 min-h-11 w-full rounded-md border text-sm text-fg",
+								onClick: () => setShow((n) => n + 40),
+								children: [
+									"Show more · ",
+									show.toLocaleString(),
+									" of ",
+									accounts.length.toLocaleString()
+								]
+							})
+						]
+					})
+				]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("footer", {
 				className: "mt-10 border-t border-line pt-4 font-mono text-xs leading-relaxed text-faint",
@@ -485,14 +503,14 @@ function mergeHead(prev, fresh, sort) {
 	merged.sort((a, b) => sort === "profit" ? b.pnl - a.pnl : a.pnl - b.pnl);
 	return merged;
 }
-function WalletRow({ account, rank, supply }) {
+function WalletRow({ account, rank, supply, active, onSelect }) {
 	const win = account.pnl >= 0;
 	const label = account.name ? account.name + " · " + shortAddr(account.address) : shortAddr(account.address);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-		href: EXPLORER + "/address/" + account.address,
-		target: "_blank",
-		rel: "noreferrer",
-		className: "grid min-h-11 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 px-3 py-3 hover:bg-white/40 sm:gap-x-4 sm:px-4",
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+		type: "button",
+		onClick: onSelect,
+		"aria-pressed": active,
+		className: "grid w-full min-h-11 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 px-3 py-3 text-left hover:bg-white/40 sm:gap-x-4 sm:px-4 " + (active ? "bg-white/50" : ""),
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 				className: "flex min-w-0 items-baseline gap-2",
@@ -547,6 +565,150 @@ function WalletRow({ account, rank, supply }) {
 			})
 		]
 	}) });
+}
+function WalletScan({ account, onClose }) {
+	const [trades, setTrades] = (0, import_react.useState)(0);
+	const [profit, setProfit] = (0, import_react.useState)(0);
+	const [loss, setLoss] = (0, import_react.useState)(0);
+	const [profitCount, setProfitCount] = (0, import_react.useState)(0);
+	const [lossCount, setLossCount] = (0, import_react.useState)(0);
+	const [done, setDone] = (0, import_react.useState)(false);
+	const [error, setError] = (0, import_react.useState)(null);
+	(0, import_react.useEffect)(() => {
+		let dead = false;
+		let cursor = null;
+		setTrades(0);
+		setProfit(0);
+		setLoss(0);
+		setProfitCount(0);
+		setLossCount(0);
+		setDone(false);
+		setError(null);
+		const run = async () => {
+			let next = null;
+			let total = 0;
+			let won = 0;
+			let lost = 0;
+			let wins = 0;
+			let losses = 0;
+			do {
+				const page = await scanTrades({ data: {
+					address: account.address,
+					cursor: next
+				} });
+				if (dead) return;
+				total += page.trades;
+				won += page.profit;
+				lost += page.loss;
+				wins += page.profitCount;
+				losses += page.lossCount;
+				next = page.nextCursor;
+				cursor = next;
+				setTrades(total);
+				setProfit(won);
+				setLoss(lost);
+				setProfitCount(wins);
+				setLossCount(losses);
+			} while (cursor);
+			if (!dead) setDone(true);
+		};
+		run().catch((err) => {
+			if (dead) return;
+			setError(err instanceof Error ? err.message : "Scan failed");
+		});
+		return () => {
+			dead = true;
+		};
+	}, [account.address]);
+	const label = account.name ? account.name + " · " + shortAddr(account.address) : shortAddr(account.address);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+		className: "glass mt-4 rounded-xl border p-4",
+		"aria-live": "polite",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-start justify-between gap-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "min-w-0",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+						className: "truncate font-mono text-sm text-fg",
+						children: label
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+						href: EXPLORER + "/address/" + account.address,
+						target: "_blank",
+						rel: "noreferrer",
+						className: "font-mono text-xs text-amber underline decoration-line underline-offset-2",
+						children: account.address
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+					type: "button",
+					onClick: onClose,
+					className: "min-h-11 shrink-0 font-mono text-xs text-muted",
+					children: "Close"
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("dl", {
+				className: "mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
+						label: "Trades",
+						value: trades.toLocaleString(),
+						hint: done ? "Closed and liquidated" : "Scanning"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
+						label: "Volume",
+						value: "$" + compact(account.volume),
+						hint: "All markets"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
+						label: "Profits",
+						value: usd(profit),
+						hint: profitCount.toLocaleString() + " winning",
+						tone: "profit"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
+						label: "Losses",
+						value: usd(loss),
+						hint: lossCount.toLocaleString() + " losing",
+						tone: "loss"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
+						label: "$PAPER",
+						value: account.paperLabel,
+						hint: "Earned",
+						tone: "paper"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
+						label: "$PAPER staked",
+						value: account.stakedLabel,
+						hint: "In staking"
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "mt-3 font-mono text-xs text-faint",
+				children: error ? error : done ? "Scan complete" : "Scan · " + trades.toLocaleString() + " trades"
+			})
+		]
+	});
+}
+function ScanStat({ label, value, hint, tone }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "rounded-lg bg-white/45 px-2.5 py-2",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
+				className: "text-[11px] leading-none text-faint",
+				children: label
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dd", {
+				className: "mt-1 font-mono text-sm font-medium tabular-nums " + (tone === "profit" ? "text-profit" : tone === "loss" ? "text-loss" : tone === "paper" ? "text-amber" : "text-fg"),
+				children: value
+			}),
+			hint && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "mt-1 font-mono text-[11px] text-muted",
+				children: hint
+			})
+		]
+	});
 }
 function Stat({ label, value, hint, tone, unit }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
