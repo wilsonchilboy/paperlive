@@ -111,7 +111,7 @@ export function TapeApp() {
         </p>
       </div>
       <header className="mt-2 border-b border-line pb-5">
-        <h1 className="text-3xl font-semibold tracking-tight text-fg sm:text-4xl">PaperTrade Live</h1>
+        <h1 className="text-center text-3xl font-semibold tracking-tight text-fg sm:text-4xl">PaperTrade Live</h1>
       </header>
 
       <section className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -254,11 +254,20 @@ function ThemeToggle() {
   return (
     <button
       type="button"
+      role="switch"
+      aria-checked={dark}
+      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       onClick={toggle}
-      aria-pressed={dark}
-      className="glass min-h-11 rounded-md border px-3 font-mono text-xs text-fg"
+      className={
+        "relative h-11 w-20 shrink-0 rounded-full border " + (dark ? "border-amber bg-amber" : "glass border-line")
+      }
     >
-      {dark ? "Light" : "Dark"}
+      <span
+        className={
+          "absolute top-1 left-1 size-9 rounded-full shadow transition-transform duration-200 " +
+          (dark ? "translate-x-9 bg-on-accent" : "bg-amber")
+        }
+      />
     </button>
   );
 }

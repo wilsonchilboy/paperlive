@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-C2k_Topj.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-BcrN0Sh9.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -170,7 +170,7 @@ function TapeApp() {
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
 				className: "mt-2 border-b border-line pb-5",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-					className: "text-3xl font-semibold tracking-tight text-fg sm:text-4xl",
+					className: "text-center text-3xl font-semibold tracking-tight text-fg sm:text-4xl",
 					children: "PaperTrade Live"
 				})
 			}),
@@ -355,10 +355,12 @@ function ThemeToggle() {
 	}
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 		type: "button",
+		role: "switch",
+		"aria-checked": dark,
+		"aria-label": dark ? "Switch to light mode" : "Switch to dark mode",
 		onClick: toggle,
-		"aria-pressed": dark,
-		className: "glass min-h-11 rounded-md border px-3 font-mono text-xs text-fg",
-		children: dark ? "Light" : "Dark"
+		className: "relative h-11 w-20 shrink-0 rounded-full border " + (dark ? "border-amber bg-amber" : "glass border-line"),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute top-1 left-1 size-9 rounded-full shadow transition-transform duration-200 " + (dark ? "translate-x-9 bg-on-accent" : "bg-amber") })
 	});
 }
 function WaterField() {
