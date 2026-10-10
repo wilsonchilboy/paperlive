@@ -29,6 +29,9 @@ export type LiveAccount = {
   paperLabel: string;
   staked: number;
   stakedLabel: string;
+  openCount: number;
+  openNotional: number;
+  upnl: number;
   volume: number;
   rank: number;
 };
@@ -156,6 +159,9 @@ type Board = {
     realizedPnl: string;
     totalVolume: string;
     paperTotal: string;
+    currentOpenPositionCount: number;
+    currentOpenNotional: string;
+    currentUnrealizedPnl: string;
     _leaderboardRank: number;
   }[];
 };
@@ -181,6 +187,9 @@ function mapAccounts(rows: Board["accounts"]): LiveAccount[] {
     paperLabel: formatToken(row.paperTotal),
     staked: 0,
     stakedLabel: "—",
+    openCount: row.currentOpenPositionCount ?? 0,
+    openNotional: num18(row.currentOpenNotional),
+    upnl: num18(row.currentUnrealizedPnl),
     volume: num18(row.totalVolume),
     rank: row._leaderboardRank,
   }));

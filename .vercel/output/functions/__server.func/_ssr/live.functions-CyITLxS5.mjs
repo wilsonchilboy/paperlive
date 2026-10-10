@@ -1,5 +1,5 @@
 import { n as TSS_SERVER_FUNCTION, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-BxHiGjO-.js
+//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-CyITLxS5.js
 var createServerRpc = (serverFnMeta, splitImportFn) => {
 	const url = "/_serverFn/" + serverFnMeta.id;
 	return Object.assign(splitImportFn, {
@@ -105,6 +105,9 @@ function mapAccounts(rows) {
 		paperLabel: formatToken(row.paperTotal),
 		staked: 0,
 		stakedLabel: "—",
+		openCount: row.currentOpenPositionCount ?? 0,
+		openNotional: num18(row.currentOpenNotional),
+		upnl: num18(row.currentUnrealizedPnl),
 		volume: num18(row.totalVolume),
 		rank: row._leaderboardRank
 	}));

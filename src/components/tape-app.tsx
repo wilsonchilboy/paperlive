@@ -203,7 +203,7 @@ export function TapeApp() {
           Volume, PAPER supply, and wallet profit are the exchange’s own figures. $PAPER earned is the sum of
           mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M,
           then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently
-          has in the staking contract.
+          has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL.
         </p>
       </footer>
     </div>
@@ -237,6 +237,15 @@ function WalletRow({ account, rank, supply }: { account: LiveAccount; rank: numb
             <span className="mt-0.5 block truncate font-mono text-xs text-muted">
               {sharePct(account.paper, supply)} · ${compact(account.volume)}
             </span>
+            {account.openCount > 0 && (
+              <span className="mt-0.5 block truncate font-mono text-xs text-fg">
+                {account.openCount.toLocaleString()} open
+                {" · $"}
+                {compact(account.openNotional)}
+                {" · uPnL "}
+                <span className={account.upnl >= 0 ? "text-profit" : "text-loss"}>{usd(account.upnl)}</span>
+              </span>
+            )}
           </span>
         </span>
         <span className={"text-center font-mono text-sm font-medium tabular-nums " + (win ? "text-profit" : "text-loss")}>

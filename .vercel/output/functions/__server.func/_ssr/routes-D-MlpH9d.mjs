@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-D6y_w8RN.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-D-MlpH9d.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -305,7 +305,7 @@ function TapeApp() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("footer", {
 				className: "mt-10 border-t border-line pt-4 font-mono text-xs leading-relaxed text-faint",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, PAPER supply, and wallet profit are the exchange’s own figures. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently has in the staking contract." })
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, PAPER supply, and wallet profit are the exchange’s own figures. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL." })
 			})
 		]
 	});
@@ -334,17 +334,34 @@ function WalletRow({ account, rank, supply }) {
 					children: rank
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 					className: "min-w-0",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "block truncate font-mono text-sm text-fg",
-						children: label
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-						className: "mt-0.5 block truncate font-mono text-xs text-muted",
-						children: [
-							sharePct(account.paper, supply),
-							" · $",
-							compact(account.volume)
-						]
-					})]
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "block truncate font-mono text-sm text-fg",
+							children: label
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "mt-0.5 block truncate font-mono text-xs text-muted",
+							children: [
+								sharePct(account.paper, supply),
+								" · $",
+								compact(account.volume)
+							]
+						}),
+						account.openCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "mt-0.5 block truncate font-mono text-xs text-fg",
+							children: [
+								account.openCount.toLocaleString(),
+								" open",
+								" · $",
+								compact(account.openNotional),
+								" · uPnL ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: account.upnl >= 0 ? "text-profit" : "text-loss",
+									children: usd(account.upnl)
+								})
+							]
+						})
+					]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
