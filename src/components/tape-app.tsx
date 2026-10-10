@@ -259,13 +259,13 @@ function ThemeToggle() {
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       onClick={toggle}
       className={
-        "relative h-11 w-20 shrink-0 rounded-full border " + (dark ? "border-amber bg-amber" : "glass border-line")
+        "relative h-6 w-11 shrink-0 rounded-full border " + (dark ? "border-amber bg-amber" : "glass border-line")
       }
     >
       <span
         className={
-          "absolute top-1 left-1 size-9 rounded-full shadow transition-transform duration-200 " +
-          (dark ? "translate-x-9 bg-on-accent" : "bg-amber")
+          "absolute top-0.5 left-0.5 size-5 rounded-full shadow transition-transform duration-200 " +
+          (dark ? "translate-x-5 bg-on-accent" : "bg-amber")
         }
       />
     </button>
