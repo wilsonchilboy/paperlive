@@ -173,8 +173,8 @@ export function TapeApp() {
             <span className="pl-8">Wallet</span>
             <span className="text-center">PnL</span>
             <span className="flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4">
-              <span className="sm:w-36 sm:text-right">Earned</span>
-              <span className="sm:w-36 sm:text-right">Staked</span>
+              <span className="sm:w-36 sm:text-right">$PAPER</span>
+              <span className="sm:w-40 sm:text-right">$PAPER staked</span>
             </span>
           </li>
           {visible.length === 0 && (
@@ -202,8 +202,8 @@ export function TapeApp() {
         <p>
           Volume, PAPER supply, and wallet profit are the exchange’s own figures. $PAPER earned is the sum of
           mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M,
-          then 100 × (120M / (120M + tail))². Wins mint nothing. Staked is how much of that PAPER the wallet
-          currently has in the staking contract.
+          then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently
+          has in the staking contract.
         </p>
       </footer>
     </div>
@@ -244,7 +244,7 @@ function WalletRow({ account, rank, supply }: { account: LiveAccount; rank: numb
         </span>
         <span className="flex flex-col items-end gap-0.5 sm:flex-row sm:items-baseline sm:justify-end sm:gap-4">
           <span className="font-mono text-xs text-amber tabular-nums sm:w-36 sm:text-right sm:text-sm">{account.paperLabel}</span>
-          <span className="font-mono text-xs tabular-nums text-fg sm:w-36 sm:text-right sm:text-sm">{account.stakedLabel}</span>
+          <span className="font-mono text-xs tabular-nums text-fg sm:w-40 sm:text-right sm:text-sm">{account.stakedLabel}</span>
         </span>
       </a>
     </li>

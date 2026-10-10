@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-D4-pSZmm.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-D6y_w8RN.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -270,10 +270,10 @@ function TapeApp() {
 											className: "flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 												className: "sm:w-36 sm:text-right",
-												children: "Earned"
+												children: "$PAPER"
 											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "sm:w-36 sm:text-right",
-												children: "Staked"
+												className: "sm:w-40 sm:text-right",
+												children: "$PAPER staked"
 											})]
 										})
 									]
@@ -305,7 +305,7 @@ function TapeApp() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("footer", {
 				className: "mt-10 border-t border-line pt-4 font-mono text-xs leading-relaxed text-faint",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, PAPER supply, and wallet profit are the exchange’s own figures. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. Staked is how much of that PAPER the wallet currently has in the staking contract." })
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, PAPER supply, and wallet profit are the exchange’s own figures. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently has in the staking contract." })
 			})
 		]
 	});
@@ -357,7 +357,7 @@ function WalletRow({ account, rank, supply }) {
 					className: "font-mono text-xs text-amber tabular-nums sm:w-36 sm:text-right sm:text-sm",
 					children: account.paperLabel
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "font-mono text-xs tabular-nums text-fg sm:w-36 sm:text-right sm:text-sm",
+					className: "font-mono text-xs tabular-nums text-fg sm:w-40 sm:text-right sm:text-sm",
 					children: account.stakedLabel
 				})]
 			})
