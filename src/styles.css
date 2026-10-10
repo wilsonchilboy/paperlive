@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f4ecd8;
+  --color-surface: #faf6ed;
+  --color-surface-2: #ede5d0;
+  --color-fg: #2a2520;
+  --color-muted: #7a7060;
+  --color-faint: #938978;
+  --color-line: #e0d5c0;
+  --color-profit: #2d5f3a;
+  --color-loss: #8c3d32;
+  --color-amber: #7a6235;
+  --color-eth: #2a4a81;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html,
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+  }
+
+  body {
+    min-height: 100vh;
+  }
+}
+
+@keyframes tape-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.tape-pulse {
+  animation: tape-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tape-pulse {
+    animation: none;
+  }
+}

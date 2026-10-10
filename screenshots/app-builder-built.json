@@ -1,0 +1,43 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Paper Tape — Papertrade PnL",
+      "hasCanvas": false,
+      "bodyTextLen": 785,
+      "bodyTextHash": "59844dded79e5436690420afb1749508a264c090888c3ea96466a309f128640f",
+      "bodyTextPrefix": "PAPERTRADE EXCHANGE · LIVE Paper Tape Volume, supply, and every ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Paper Tape — Papertrade PnL",
+      "hasCanvas": false,
+      "bodyTextLen": 2433,
+      "bodyTextHash": "29000b560644126691b3bb566d9e84c11ee13cb8898926005379d5422d72cacd",
+      "bodyTextPrefix": "PAPERTRADE EXCHANGE · LIVE Paper Tape Volume, supply, and every ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [
+    "BRAND NOTE: no custom public/og.jpg — the platform will serve the og.grok.me placeholder. Custom cards are the default for games of every kind (DOM board/word games included), whimsical apps, creative tools, and brand-forward pages — only plain utilities (converters, CRUD trackers, admin dashboards) keep the placeholder. If this app is not a plain utility, finish the brand-asset pass per /workspace/.grok/skills/og/SKILL.md."
+  ],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "desktop: body text changed (1240 -> 785 chars, hash mismatch)",
+    "mobile: body text changed (1240 -> 2433 chars, hash mismatch)"
+  ]
+}

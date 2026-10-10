@@ -1,0 +1,162 @@
+[
+  {
+    "name": "batch_simulate.py",
+    "path": "pipeline/batch_simulate.py",
+    "sha": "869a81ffd83408ddfbf7c1113263b09a2d91259d",
+    "size": 14922,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/batch_simulate.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/batch_simulate.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/869a81ffd83408ddfbf7c1113263b09a2d91259d",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/batch_simulate.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/batch_simulate.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/869a81ffd83408ddfbf7c1113263b09a2d91259d",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/batch_simulate.py"
+    }
+  },
+  {
+    "name": "local_server.py",
+    "path": "pipeline/local_server.py",
+    "sha": "bc5e071fbbc74ee34b69c401d62f9bb1b9aa6300",
+    "size": 23368,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/local_server.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/local_server.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/bc5e071fbbc74ee34b69c401d62f9bb1b9aa6300",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/local_server.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/local_server.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/bc5e071fbbc74ee34b69c401d62f9bb1b9aa6300",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/local_server.py"
+    }
+  },
+  {
+    "name": "make_charts.py",
+    "path": "pipeline/make_charts.py",
+    "sha": "a93350c93c822fa40a0d6d8d703120b06795e781",
+    "size": 39523,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/make_charts.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/make_charts.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/a93350c93c822fa40a0d6d8d703120b06795e781",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/make_charts.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/make_charts.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/a93350c93c822fa40a0d6d8d703120b06795e781",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/make_charts.py"
+    }
+  },
+  {
+    "name": "plot_batch.py",
+    "path": "pipeline/plot_batch.py",
+    "sha": "e4bca01d67d2589654a51c79aa73f97291d9e28b",
+    "size": 70828,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_batch.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_batch.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/e4bca01d67d2589654a51c79aa73f97291d9e28b",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/plot_batch.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_batch.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/e4bca01d67d2589654a51c79aa73f97291d9e28b",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_batch.py"
+    }
+  },
+  {
+    "name": "plot_coins.py",
+    "path": "pipeline/plot_coins.py",
+    "sha": "8ea695fce05727b89ac7f52b5f1a4678d3bdf4f0",
+    "size": 18741,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_coins.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_coins.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/8ea695fce05727b89ac7f52b5f1a4678d3bdf4f0",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/plot_coins.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_coins.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/8ea695fce05727b89ac7f52b5f1a4678d3bdf4f0",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_coins.py"
+    }
+  },
+  {
+    "name": "plot_emission.py",
+    "path": "pipeline/plot_emission.py",
+    "sha": "118e88f3eec23a672126e9b3890869f5ea8d95e2",
+    "size": 18524,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_emission.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_emission.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/118e88f3eec23a672126e9b3890869f5ea8d95e2",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/plot_emission.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_emission.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/118e88f3eec23a672126e9b3890869f5ea8d95e2",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_emission.py"
+    }
+  },
+  {
+    "name": "plot_extra.py",
+    "path": "pipeline/plot_extra.py",
+    "sha": "5fd2221eed4d1a9c0d56198099f11d717cff4a76",
+    "size": 14276,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_extra.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_extra.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/5fd2221eed4d1a9c0d56198099f11d717cff4a76",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/plot_extra.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_extra.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/5fd2221eed4d1a9c0d56198099f11d717cff4a76",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_extra.py"
+    }
+  },
+  {
+    "name": "plot_figures.py",
+    "path": "pipeline/plot_figures.py",
+    "sha": "187e03315fa74ebff7f1e632fa4f4b7ab2453404",
+    "size": 42703,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_figures.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_figures.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/187e03315fa74ebff7f1e632fa4f4b7ab2453404",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/plot_figures.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_figures.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/187e03315fa74ebff7f1e632fa4f4b7ab2453404",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_figures.py"
+    }
+  },
+  {
+    "name": "plot_yield.py",
+    "path": "pipeline/plot_yield.py",
+    "sha": "6891455bb9b1b551f65141372ba8d5db6e7246c2",
+    "size": 48601,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_yield.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_yield.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/6891455bb9b1b551f65141372ba8d5db6e7246c2",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/plot_yield.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/plot_yield.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/6891455bb9b1b551f65141372ba8d5db6e7246c2",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/plot_yield.py"
+    }
+  },
+  {
+    "name": "simulate_paper_lp.py",
+    "path": "pipeline/simulate_paper_lp.py",
+    "sha": "72c660a95b0ebaa4047f8cef0261cf293d1288b8",
+    "size": 21522,
+    "url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/simulate_paper_lp.py?ref=main",
+    "html_url": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/simulate_paper_lp.py",
+    "git_url": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/72c660a95b0ebaa4047f8cef0261cf293d1288b8",
+    "download_url": "https://raw.githubusercontent.com/HakaiRhinohl/PaperTrade-Simulations/main/pipeline/simulate_paper_lp.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/contents/pipeline/simulate_paper_lp.py?ref=main",
+      "git": "https://api.github.com/repos/HakaiRhinohl/PaperTrade-Simulations/git/blobs/72c660a95b0ebaa4047f8cef0261cf293d1288b8",
+      "html": "https://github.com/HakaiRhinohl/PaperTrade-Simulations/blob/main/pipeline/simulate_paper_lp.py"
+    }
+  }
+]
