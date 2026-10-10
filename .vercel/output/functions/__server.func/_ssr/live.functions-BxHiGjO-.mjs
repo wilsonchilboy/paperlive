@@ -1,5 +1,5 @@
 import { n as TSS_SERVER_FUNCTION, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-Ba2e68jb.js
+//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-BxHiGjO-.js
 var createServerRpc = (serverFnMeta, splitImportFn) => {
 	const url = "/_serverFn/" + serverFnMeta.id;
 	return Object.assign(splitImportFn, {
@@ -20,6 +20,17 @@ function num18(raw) {
 	const frac = pad.slice(-18, -14);
 	const value = Number(whole) + Number(frac) / 1e4;
 	return neg ? -value : value;
+}
+function formatToken(raw) {
+	const trimmed = raw.trim();
+	const neg = trimmed.startsWith("-");
+	const digits = neg ? trimmed.slice(1) : trimmed;
+	if (!/^\d+$/.test(digits)) return "0.00";
+	const pad = digits.padStart(20, "0");
+	const whole = pad.slice(0, -18).replace(/^0+(?=\d)/, "") || "0";
+	const frac = pad.slice(-18, -16);
+	const grouped = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	return (neg ? "-" : "") + grouped + "." + frac;
 }
 function qs(params) {
 	return Object.keys(params).sort().map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join("&");
@@ -56,11 +67,7 @@ var getProtocol_createServerFn_handler = createServerRpc({
 	filename: "src/lib/live.functions.ts"
 }, (opts) => getProtocol.__executeServer(opts));
 var getProtocol = createServerFn({ method: "GET" }).handler(getProtocol_createServerFn_handler, async () => {
-	const [summary, markets, recent] = await Promise.all([
-		pull("/query/protocol/summary"),
-		pull("/query/protocol/market-stats"),
-		pull("/query/protocol/trades/recent")
-	]);
+	const [summary, markets] = await Promise.all([pull("/query/protocol/summary"), pull("/query/protocol/market-stats")]);
 	return {
 		at: summary.source.at,
 		block: Number(summary.source.block),
@@ -75,18 +82,7 @@ var getProtocol = createServerFn({ method: "GET" }).handler(getProtocol_createSe
 		opens: summary.activity.open,
 		fees: num18(summary.fees.lifetime),
 		rate: marginalRate(summary.paper),
-		tail: num18(summary.paper.tailProgress),
-		trades: (recent.events ?? []).slice(0, 24).map((event) => ({
-			id: event.seq,
-			ts: event.ts,
-			wallet: event.wallet,
-			instrument: event.instrument,
-			side: event.side,
-			leverage: event.leverage,
-			notional: event.notionalUsd,
-			kind: event.kind,
-			pnl: event.kind === "close" ? event.pnlUsd : null
-		}))
+		tail: num18(summary.paper.tailProgress)
 	};
 });
 async function fetchPage(sort, page, q) {
@@ -106,9 +102,61 @@ function mapAccounts(rows) {
 		name: row.leaderboardName,
 		pnl: num18(row.realizedPnl),
 		paper: num18(row.paperTotal),
+		paperLabel: formatToken(row.paperTotal),
+		staked: 0,
+		stakedLabel: "—",
 		volume: num18(row.totalVolume),
 		rank: row._leaderboardRank
 	}));
+}
+var STAKING = "0xaad6c7b0cc3014fc80ffedae0ed7ce5967b0f016";
+var STAKED_SEL = "0x60217267";
+var STAKE_RPCS = ["https://rpc.hypurrscan.io", "https://rpc.hyperliquid.xyz/evm"];
+async function stakedRaw(addresses) {
+	const out = /* @__PURE__ */ new Map();
+	const jobs = [];
+	for (let i = 0; i < addresses.length; i += 20) jobs.push(addresses.slice(i, i + 20));
+	let cursor = 0;
+	async function worker() {
+		while (cursor < jobs.length) {
+			const job = jobs[cursor++];
+			if (!job) return;
+			const body = job.map((addr, id) => ({
+				jsonrpc: "2.0",
+				id,
+				method: "eth_call",
+				params: [{
+					to: STAKING,
+					data: STAKED_SEL + addr.slice(2).padStart(64, "0")
+				}, "latest"]
+			}));
+			let rows = null;
+			for (const rpc of STAKE_RPCS) try {
+				const json = await (await fetch(rpc, {
+					method: "POST",
+					headers: { "content-type": "application/json" },
+					body: JSON.stringify(body)
+				})).json();
+				if (Array.isArray(json)) {
+					rows = json;
+					break;
+				}
+			} catch {}
+			if (!rows) continue;
+			for (const row of rows) {
+				if (row.id == null) continue;
+				const addr = job[row.id];
+				if (addr && typeof row.result === "string" && /^0x[0-9a-fA-F]+$/.test(row.result)) out.set(addr, BigInt(row.result).toString());
+			}
+		}
+	}
+	await Promise.all([
+		worker(),
+		worker(),
+		worker(),
+		worker()
+	]);
+	return out;
 }
 var getWalletBatch_createServerFn_handler = createServerRpc({
 	id: "cbbe9b29c95d3715b1aa83e702e1bd5e9a2bff0e57b7713a9dd70965d10968e4",
@@ -126,6 +174,15 @@ var getWalletBatch = createServerFn({ method: "POST" }).validator((data) => {
 	if (ok.length === 0) throw new Error("Leaderboard unavailable");
 	const totalPages = ok[0].pageInfo.totalPages;
 	const accounts = ok.filter((page) => page.pageInfo.page < totalPages).sort((a, b) => a.pageInfo.page - b.pageInfo.page).flatMap((page) => mapAccounts(page.accounts));
+	try {
+		const stakes = await stakedRaw(accounts.map((account) => account.address));
+		for (const account of accounts) {
+			const raw = stakes.get(account.address);
+			if (!raw) continue;
+			account.staked = num18(raw);
+			account.stakedLabel = formatToken(raw);
+		}
+	} catch {}
 	return {
 		count: ok[0].count,
 		totalPages,

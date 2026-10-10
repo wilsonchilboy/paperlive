@@ -103,7 +103,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-BuXxU8kY.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-CUIUVb3A.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -125,11 +125,11 @@ async function getStartManifest(matchedRoutes) {
 var manifest = {
 	"45837d1f4acbff1f0b69eec7f6494ceadbe3b72b346ca292634ccaa3eb34f14c": {
 		functionName: "getProtocol_createServerFn_handler",
-		importer: () => import("./live.functions-Ba2e68jb.mjs")
+		importer: () => import("./live.functions-BxHiGjO-.mjs")
 	},
 	"cbbe9b29c95d3715b1aa83e702e1bd5e9a2bff0e57b7713a9dd70965d10968e4": {
 		functionName: "getWalletBatch_createServerFn_handler",
-		importer: () => import("./live.functions-Ba2e68jb.mjs")
+		importer: () => import("./live.functions-BxHiGjO-.mjs")
 	}
 };
 async function getServerFnById(id, access) {
@@ -1534,7 +1534,7 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router-BeqrgZYo.mjs"),
+		import("./router-C5nxR_wK.mjs"),
 		import("./start-5Z2QO8AU.mjs"),
 		import("./empty-plugin-adapters-D9UWiqvJ.mjs")
 	]);
