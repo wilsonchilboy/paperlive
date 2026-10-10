@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-BcrN0Sh9.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-Bg2Ms9tR.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -235,11 +235,11 @@ function TapeApp() {
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SortButton, {
 								active: sort === "profit",
 								onClick: () => setSort("profit"),
-								children: "Highest profit"
+								children: "Winners"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SortButton, {
 								active: sort === "loss",
 								onClick: () => setSort("loss"),
-								children: "Highest loss"
+								children: "Losers"
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
 							className: "relative min-w-0 flex-1",
@@ -272,7 +272,7 @@ function TapeApp() {
 										count.toLocaleString(),
 										" accounts",
 										loadedPages < totalPages ? " · loading " + loadedPages + "/" + totalPages : "",
-										sort === "profit" ? " · profit down" : " · loss down"
+										sort === "profit" ? " · winners" : " · losers"
 									]
 								})]
 							}),
@@ -772,7 +772,7 @@ function SortButton({ active, onClick, children }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 		type: "button",
 		onClick,
-		className: "min-h-11 rounded-md px-3 font-mono text-xs " + (active ? "bg-amber text-on-accent shadow-md" : "glass border text-muted"),
+		className: "min-h-11 rounded-md px-4 font-mono text-xs tracking-wide uppercase " + (active ? "bg-amber text-on-accent shadow-md" : "glass border text-muted"),
 		children
 	});
 }

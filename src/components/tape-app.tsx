@@ -148,10 +148,10 @@ export function TapeApp() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="flex gap-1">
           <SortButton active={sort === "profit"} onClick={() => setSort("profit")}>
-            Highest profit
+            Winners
           </SortButton>
           <SortButton active={sort === "loss"} onClick={() => setSort("loss")}>
-            Highest loss
+            Losers
           </SortButton>
         </div>
         <label className="relative min-w-0 flex-1">
@@ -178,7 +178,7 @@ export function TapeApp() {
           <p className="font-mono text-xs text-faint">
             {count.toLocaleString()} accounts
             {loadedPages < totalPages ? " · loading " + loadedPages + "/" + totalPages : ""}
-            {sort === "profit" ? " · profit down" : " · loss down"}
+            {sort === "profit" ? " · winners" : " · losers"}
           </p>
         </div>
         <ul className="glass divide-y divide-line/40 rounded-xl border">
@@ -607,7 +607,7 @@ function SortButton({
       type="button"
       onClick={onClick}
       className={
-        "min-h-11 rounded-md px-3 font-mono text-xs " +
+        "min-h-11 rounded-md px-4 font-mono text-xs tracking-wide uppercase " +
         (active ? "bg-amber text-on-accent shadow-md" : "glass border text-muted")
       }
     >
