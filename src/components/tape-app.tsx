@@ -96,17 +96,20 @@ export function TapeApp() {
   return (
     <div className="relative mx-auto min-h-screen max-w-6xl px-4 pb-16 pt-3 sm:px-6">
       <WaterField />
-      <p className="text-right font-mono text-xs text-muted">
-        build by:{" "}
-        <a
-          href="https://x.com/wilson_"
-          target="_blank"
-          rel="noreferrer"
-          className="text-fg underline decoration-line underline-offset-2 hover:text-amber"
-        >
-          wilson
-        </a>
-      </p>
+      <div className="flex items-center justify-between gap-3">
+        <ThemeToggle />
+        <p className="text-right font-mono text-xs text-muted">
+          build by:{" "}
+          <a
+            href="https://x.com/wilson_"
+            target="_blank"
+            rel="noreferrer"
+            className="text-fg underline decoration-line underline-offset-2 hover:text-amber"
+          >
+            wilson
+          </a>
+        </p>
+      </div>
       <header className="mt-2 border-b border-line pb-5">
         <h1 className="text-3xl font-semibold tracking-tight text-fg sm:text-4xl">PaperTrade Live</h1>
       </header>
@@ -227,6 +230,39 @@ export function TapeApp() {
   );
 }
 
+function ThemeToggle() {
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    setDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  function toggle() {
+    setDark((prev) => {
+      const next = !prev;
+      document.documentElement.classList.toggle("dark", next);
+      try {
+        localStorage.setItem("pt-theme", next ? "dark" : "light");
+      } catch {
+        /* private mode */
+      }
+      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next ? "#120c22" : "#e7c6f4");
+      return next;
+    });
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-pressed={dark}
+      className="glass min-h-11 rounded-md border px-3 font-mono text-xs text-fg"
+    >
+      {dark ? "Light" : "Dark"}
+    </button>
+  );
+}
+
 function WaterField() {
   const ref = useRef<HTMLCanvasElement>(null);
 
@@ -268,10 +304,17 @@ function WaterField() {
       const h = window.innerHeight;
       const t = reduced ? 0 : now / 1000;
       g.clearRect(0, 0, w, h);
+      const dark = document.documentElement.classList.contains("dark");
       const wash = g.createLinearGradient(0, 0, w, h);
-      wash.addColorStop(0, "#f8d7f6");
-      wash.addColorStop(0.46, "#e7d4ff");
-      wash.addColorStop(1, "#b9dbff");
+      if (dark) {
+        wash.addColorStop(0, "#1a1028");
+        wash.addColorStop(0.46, "#24143a");
+        wash.addColorStop(1, "#102033");
+      } else {
+        wash.addColorStop(0, "#f8d7f6");
+        wash.addColorStop(0.46, "#e7d4ff");
+        wash.addColorStop(1, "#b9dbff");
+      }
       g.fillStyle = wash;
       g.fillRect(0, 0, w, h);
 
@@ -312,7 +355,7 @@ function WaterField() {
         const x = (drop.x + Math.sin(t * 0.8 + drop.ph) * 0.015) * w;
         const py = y * h;
         g.beginPath();
-        g.fillStyle = "rgba(255,255,255,0.55)";
+        g.fillStyle = dark ? "rgba(210,190,255,0.35)" : "rgba(255,255,255,0.55)";
         g.arc(x, py, drop.r, 0, Math.PI * 2);
         g.fill();
         g.beginPath();
@@ -507,7 +550,7 @@ function ScanStat({
 }) {
   const color = tone === "profit" ? "text-profit" : tone === "loss" ? "text-loss" : tone === "paper" ? "text-amber" : "text-fg";
   return (
-    <div className="rounded-lg bg-white/45 px-2.5 py-2">
+    <div className="rounded-lg bg-white/45 px-2.5 py-2 dark:bg-white/10">
       <dt className="text-[11px] leading-none text-faint">{label}</dt>
       <dd className={"mt-1 font-mono text-sm font-medium tabular-nums " + color}>{value}</dd>
       {hint && <p className="mt-1 font-mono text-[11px] text-muted">{hint}</p>}

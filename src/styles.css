@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-bg: #f3c9ef;
@@ -41,6 +42,34 @@
   border-color: rgb(255 255 255 / 0.72);
   backdrop-filter: blur(16px);
   box-shadow: 0 12px 40px rgb(96 72 170 / 0.12);
+}
+
+html.dark {
+  --color-bg: #120c22;
+  --color-surface: #1c1433;
+  --color-surface-2: #2a1d4a;
+  --color-fg: #f4eefe;
+  --color-muted: #c2b3df;
+  --color-faint: #9a8bb8;
+  --color-line: #3a2d58;
+  --color-profit: #8ed4ae;
+  --color-loss: #f3a8be;
+  --color-amber: #c4b5fd;
+  --color-on-accent: #1a1030;
+  --color-eth: #9eb6f0;
+  color-scheme: dark;
+  background: linear-gradient(115deg, #1a1028 0%, #24143a 48%, #102033 100%);
+}
+
+html.dark body {
+  background: linear-gradient(115deg, #1a1028 0%, #24143a 48%, #102033 100%);
+  color: var(--color-fg);
+}
+
+html.dark .glass {
+  background: rgb(22 14 42 / 0.66);
+  border-color: rgb(255 255 255 / 0.14);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.28);
 }
 
 @keyframes tape-pulse {

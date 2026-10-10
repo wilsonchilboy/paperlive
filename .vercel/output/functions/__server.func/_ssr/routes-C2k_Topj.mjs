@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-C_cpmN1d.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-C2k_Topj.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -150,19 +150,22 @@ function TapeApp() {
 		className: "relative mx-auto min-h-screen max-w-6xl px-4 pb-16 pt-3 sm:px-6",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(WaterField, {}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-				className: "text-right font-mono text-xs text-muted",
-				children: [
-					"build by:",
-					" ",
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-						href: "https://x.com/wilson_",
-						target: "_blank",
-						rel: "noreferrer",
-						className: "text-fg underline decoration-line underline-offset-2 hover:text-amber",
-						children: "wilson"
-					})
-				]
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between gap-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ThemeToggle, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "text-right font-mono text-xs text-muted",
+					children: [
+						"build by:",
+						" ",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+							href: "https://x.com/wilson_",
+							target: "_blank",
+							rel: "noreferrer",
+							className: "text-fg underline decoration-line underline-offset-2 hover:text-amber",
+							children: "wilson"
+						})
+					]
+				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
 				className: "mt-2 border-b border-line pb-5",
@@ -334,6 +337,30 @@ function TapeApp() {
 		]
 	});
 }
+function ThemeToggle() {
+	const [dark, setDark] = (0, import_react.useState)(false);
+	(0, import_react.useEffect)(() => {
+		setDark(document.documentElement.classList.contains("dark"));
+	}, []);
+	function toggle() {
+		setDark((prev) => {
+			const next = !prev;
+			document.documentElement.classList.toggle("dark", next);
+			try {
+				localStorage.setItem("pt-theme", next ? "dark" : "light");
+			} catch {}
+			document.querySelector("meta[name=\"theme-color\"]")?.setAttribute("content", next ? "#120c22" : "#e7c6f4");
+			return next;
+		});
+	}
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+		type: "button",
+		onClick: toggle,
+		"aria-pressed": dark,
+		className: "glass min-h-11 rounded-md border px-3 font-mono text-xs text-fg",
+		children: dark ? "Light" : "Dark"
+	});
+}
 function WaterField() {
 	const ref = (0, import_react.useRef)(null);
 	(0, import_react.useEffect)(() => {
@@ -428,10 +455,17 @@ function WaterField() {
 			const h = window.innerHeight;
 			const t = reduced ? 0 : now / 1e3;
 			g.clearRect(0, 0, w, h);
+			const dark = document.documentElement.classList.contains("dark");
 			const wash = g.createLinearGradient(0, 0, w, h);
-			wash.addColorStop(0, "#f8d7f6");
-			wash.addColorStop(.46, "#e7d4ff");
-			wash.addColorStop(1, "#b9dbff");
+			if (dark) {
+				wash.addColorStop(0, "#1a1028");
+				wash.addColorStop(.46, "#24143a");
+				wash.addColorStop(1, "#102033");
+			} else {
+				wash.addColorStop(0, "#f8d7f6");
+				wash.addColorStop(.46, "#e7d4ff");
+				wash.addColorStop(1, "#b9dbff");
+			}
 			g.fillStyle = wash;
 			g.fillRect(0, 0, w, h);
 			g.globalCompositeOperation = "screen";
@@ -470,7 +504,7 @@ function WaterField() {
 				const x = (drop.x + Math.sin(t * .8 + drop.ph) * .015) * w;
 				const py = y * h;
 				g.beginPath();
-				g.fillStyle = "rgba(255,255,255,0.55)";
+				g.fillStyle = dark ? "rgba(210,190,255,0.35)" : "rgba(255,255,255,0.55)";
 				g.arc(x, py, drop.r, 0, Math.PI * 2);
 				g.fill();
 				g.beginPath();
@@ -693,7 +727,7 @@ function WalletScan({ account, onClose }) {
 }
 function ScanStat({ label, value, hint, tone }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "rounded-lg bg-white/45 px-2.5 py-2",
+		className: "rounded-lg bg-white/45 px-2.5 py-2 dark:bg-white/10",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
 				className: "text-[11px] leading-none text-faint",
