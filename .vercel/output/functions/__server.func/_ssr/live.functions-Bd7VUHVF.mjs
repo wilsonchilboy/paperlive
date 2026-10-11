@@ -1,5 +1,5 @@
 import { n as TSS_SERVER_FUNCTION, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-XrXq-7lT.js
+//#region node_modules/.nitro/vite/services/ssr/assets/live.functions-Bd7VUHVF.js
 var createServerRpc = (serverFnMeta, splitImportFn) => {
 	const url = "/_serverFn/" + serverFnMeta.id;
 	return Object.assign(splitImportFn, {
@@ -224,6 +224,7 @@ var scanTrades = createServerFn({ method: "POST" }).validator((data) => {
 	let trades = 0;
 	let profit = 0;
 	let loss = 0;
+	let fee = 0;
 	let profitCount = 0;
 	let lossCount = 0;
 	let next = cursor || null;
@@ -233,7 +234,9 @@ var scanTrades = createServerFn({ method: "POST" }).validator((data) => {
 		const page = await pull("/query/accounts/" + data.address + "/trades?" + qs(params));
 		for (const item of page.items ?? []) {
 			const pnl = num18(item.adjustedPnlRaw);
+			const paid = num18(item.userPaidFeeRaw ?? "0");
 			trades += 1;
+			fee += paid;
 			if (pnl > 0) {
 				profit += pnl;
 				profitCount += 1;
@@ -249,6 +252,7 @@ var scanTrades = createServerFn({ method: "POST" }).validator((data) => {
 		trades,
 		profit,
 		loss,
+		fee,
 		profitCount,
 		lossCount,
 		nextCursor: next

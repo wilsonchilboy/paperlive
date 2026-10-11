@@ -103,7 +103,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-Cd_nLIWO.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-Fil7Ta3H.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -125,15 +125,15 @@ async function getStartManifest(matchedRoutes) {
 var manifest = {
 	"045afd013b111a4dee761a73617a535295a92a0f8b3094501f46e7e5fb82b4f0": {
 		functionName: "scanTrades_createServerFn_handler",
-		importer: () => import("./live.functions-XrXq-7lT.mjs")
+		importer: () => import("./live.functions-Bd7VUHVF.mjs")
 	},
 	"45837d1f4acbff1f0b69eec7f6494ceadbe3b72b346ca292634ccaa3eb34f14c": {
 		functionName: "getProtocol_createServerFn_handler",
-		importer: () => import("./live.functions-XrXq-7lT.mjs")
+		importer: () => import("./live.functions-Bd7VUHVF.mjs")
 	},
 	"cbbe9b29c95d3715b1aa83e702e1bd5e9a2bff0e57b7713a9dd70965d10968e4": {
 		functionName: "getWalletBatch_createServerFn_handler",
-		importer: () => import("./live.functions-XrXq-7lT.mjs")
+		importer: () => import("./live.functions-Bd7VUHVF.mjs")
 	}
 };
 async function getServerFnById(id, access) {
@@ -1538,7 +1538,7 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router-Dt7H9_Ui.mjs"),
+		import("./router-CVoDemsu.mjs"),
 		import("./start-5Z2QO8AU.mjs"),
 		import("./empty-plugin-adapters-D9UWiqvJ.mjs")
 	]);

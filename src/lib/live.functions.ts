@@ -318,13 +318,14 @@ export type TradeScan = {
   trades: number;
   profit: number;
   loss: number;
+  fee: number;
   profitCount: number;
   lossCount: number;
   nextCursor: string | null;
 };
 
 type TradePage = {
-  items: { adjustedPnlRaw: string }[];
+  items: { adjustedPnlRaw: string; userPaidFeeRaw?: string }[];
   nextCursor: string | null;
 };
 
@@ -344,6 +345,7 @@ export const scanTrades = createServerFn({ method: "POST" })
     let trades = 0;
     let profit = 0;
     let loss = 0;
+    let fee = 0;
     let profitCount = 0;
     let lossCount = 0;
     let next: string | null = cursor || null;
@@ -353,7 +355,9 @@ export const scanTrades = createServerFn({ method: "POST" })
       const page = await pull<TradePage>("/query/accounts/" + data.address + "/trades?" + qs(params));
       for (const item of page.items ?? []) {
         const pnl = num18(item.adjustedPnlRaw);
+        const paid = num18(item.userPaidFeeRaw ?? "0");
         trades += 1;
+        fee += paid;
         if (pnl > 0) {
           profit += pnl;
           profitCount += 1;
@@ -366,5 +370,5 @@ export const scanTrades = createServerFn({ method: "POST" })
       next = following;
       if (!next) break;
     }
-    return { trades, profit, loss, profitCount, lossCount, nextCursor: next };
+    return { trades, profit, loss, fee, profitCount, lossCount, nextCursor: next };
   });

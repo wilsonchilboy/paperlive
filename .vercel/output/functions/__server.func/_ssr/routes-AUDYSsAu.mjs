@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DaRA_mrD.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-AUDYSsAu.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -286,9 +286,12 @@ function TapeApp() {
 												className: "pl-8",
 												children: "Wallet"
 											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-center",
-												children: "Realized profit"
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "text-center leading-tight",
+												children: ["Real profit", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "mt-0.5 block text-[10px] font-normal tracking-normal normal-case",
+													children: "after fee"
+												})]
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 												className: "flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4",
@@ -332,7 +335,7 @@ function TapeApp() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("footer", {
 				className: "mt-10 border-t border-line pt-4 font-mono text-xs leading-relaxed text-faint",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL." })
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. Real profit is the exchange settled number: raw gain after the impact haircut, then minus the 2% win fee. $PAPER is not included, because it cannot be transferred or sold. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL." })
 			})
 		]
 	});
@@ -608,6 +611,7 @@ function WalletScan({ account, onClose }) {
 	const [loss, setLoss] = (0, import_react.useState)(0);
 	const [profitCount, setProfitCount] = (0, import_react.useState)(0);
 	const [lossCount, setLossCount] = (0, import_react.useState)(0);
+	const [fee, setFee] = (0, import_react.useState)(0);
 	const [done, setDone] = (0, import_react.useState)(false);
 	const [error, setError] = (0, import_react.useState)(null);
 	(0, import_react.useEffect)(() => {
@@ -618,6 +622,7 @@ function WalletScan({ account, onClose }) {
 		setLoss(0);
 		setProfitCount(0);
 		setLossCount(0);
+		setFee(0);
 		setDone(false);
 		setError(null);
 		const run = async () => {
@@ -627,6 +632,7 @@ function WalletScan({ account, onClose }) {
 			let lost = 0;
 			let wins = 0;
 			let losses = 0;
+			let fees = 0;
 			do {
 				const page = await scanTrades({ data: {
 					address: account.address,
@@ -638,6 +644,7 @@ function WalletScan({ account, onClose }) {
 				lost += page.loss;
 				wins += page.profitCount;
 				losses += page.lossCount;
+				fees += page.fee;
 				next = page.nextCursor;
 				cursor = next;
 				setTrades(total);
@@ -645,6 +652,7 @@ function WalletScan({ account, onClose }) {
 				setLoss(lost);
 				setProfitCount(wins);
 				setLossCount(losses);
+				setFee(fees);
 			} while (cursor);
 			if (!dead) setDone(true);
 		};
@@ -686,10 +694,15 @@ function WalletScan({ account, onClose }) {
 				className: "mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
-						label: "Realized profit",
+						label: "Real profit",
 						value: usd(account.pnl),
-						hint: "Settled on the exchange",
+						hint: "After the impact haircut and the 2% win fee. $PAPER is not added — it cannot be sold.",
 						tone: account.pnl >= 0 ? "profit" : "loss"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
+						label: "Win fees",
+						value: usd(fee),
+						hint: "2% kept on winning closes"
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
 						label: "Trades",
@@ -704,7 +717,7 @@ function WalletScan({ account, onClose }) {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
 						label: "Profits",
 						value: usd(profit),
-						hint: profitCount.toLocaleString() + " winning",
+						hint: profitCount.toLocaleString() + " winning, before the 2% fee",
 						tone: "profit"
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {

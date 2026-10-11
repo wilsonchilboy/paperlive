@@ -184,7 +184,10 @@ export function TapeApp() {
         <ul className="glass divide-y divide-line/40 rounded-xl border">
           <li className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-end gap-x-2 px-3 py-2 font-mono text-xs tracking-wide text-faint uppercase sm:gap-x-4 sm:px-4">
             <span className="pl-8">Wallet</span>
-            <span className="text-center">Realized profit</span>
+            <span className="text-center leading-tight">
+              Real profit
+              <span className="mt-0.5 block text-[10px] font-normal tracking-normal normal-case">after fee</span>
+            </span>
             <span className="flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4">
               <span className="sm:w-36 sm:text-right">$PAPER</span>
               <span className="sm:w-40 sm:text-right">$PAPER staked</span>
@@ -220,7 +223,7 @@ export function TapeApp() {
 
       <footer className="mt-10 border-t border-line pt-4 font-mono text-xs leading-relaxed text-faint">
         <p>
-          Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. $PAPER earned is the sum of
+          Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. Real profit is the exchange settled number: raw gain after the impact haircut, then minus the 2% win fee. $PAPER is not included, because it cannot be transferred or sold. $PAPER earned is the sum of
           mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M,
           then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently
           has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL.
@@ -460,6 +463,7 @@ function WalletScan({ account, onClose }: { account: LiveAccount; onClose: () =>
   const [loss, setLoss] = useState(0);
   const [profitCount, setProfitCount] = useState(0);
   const [lossCount, setLossCount] = useState(0);
+  const [fee, setFee] = useState(0);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -471,6 +475,7 @@ function WalletScan({ account, onClose }: { account: LiveAccount; onClose: () =>
     setLoss(0);
     setProfitCount(0);
     setLossCount(0);
+    setFee(0);
     setDone(false);
     setError(null);
     const run = async () => {
@@ -480,6 +485,7 @@ function WalletScan({ account, onClose }: { account: LiveAccount; onClose: () =>
       let lost = 0;
       let wins = 0;
       let losses = 0;
+      let fees = 0;
       do {
         const page: TradeScan = await scanTrades({ data: { address: account.address, cursor: next } });
         if (dead) return;
@@ -488,6 +494,7 @@ function WalletScan({ account, onClose }: { account: LiveAccount; onClose: () =>
         lost += page.loss;
         wins += page.profitCount;
         losses += page.lossCount;
+        fees += page.fee;
         next = page.nextCursor;
         cursor = next;
         setTrades(total);
@@ -495,6 +502,7 @@ function WalletScan({ account, onClose }: { account: LiveAccount; onClose: () =>
         setLoss(lost);
         setProfitCount(wins);
         setLossCount(losses);
+        setFee(fees);
       } while (cursor);
       if (!dead) setDone(true);
     };
@@ -528,17 +536,18 @@ function WalletScan({ account, onClose }: { account: LiveAccount; onClose: () =>
       </div>
       <dl className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
         <ScanStat
-          label="Realized profit"
+          label="Real profit"
           value={usd(account.pnl)}
-          hint="Settled on the exchange"
+          hint="After the impact haircut and the 2% win fee. $PAPER is not added — it cannot be sold."
           tone={account.pnl >= 0 ? "profit" : "loss"}
         />
+        <ScanStat label="Win fees" value={usd(fee)} hint="2% kept on winning closes" />
         <ScanStat label="Trades" value={trades.toLocaleString()} hint={done ? "Closed and liquidated" : "Scanning"} />
         <ScanStat label="Volume" value={"$" + compact(account.volume)} hint="All markets" />
         <ScanStat
           label="Profits"
           value={usd(profit)}
-          hint={profitCount.toLocaleString() + " winning"}
+          hint={profitCount.toLocaleString() + " winning, before the 2% fee"}
           tone="profit"
         />
         <ScanStat label="Losses" value={usd(loss)} hint={lossCount.toLocaleString() + " losing"} tone="loss" />
