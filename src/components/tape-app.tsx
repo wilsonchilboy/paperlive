@@ -184,7 +184,7 @@ export function TapeApp() {
         <ul className="glass divide-y divide-line/40 rounded-xl border">
           <li className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-end gap-x-2 px-3 py-2 font-mono text-xs tracking-wide text-faint uppercase sm:gap-x-4 sm:px-4">
             <span className="pl-8">Wallet</span>
-            <span className="text-center">PnL</span>
+            <span className="text-center">Realized profit</span>
             <span className="flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4">
               <span className="sm:w-36 sm:text-right">$PAPER</span>
               <span className="sm:w-40 sm:text-right">$PAPER staked</span>
@@ -527,6 +527,12 @@ function WalletScan({ account, onClose }: { account: LiveAccount; onClose: () =>
         </button>
       </div>
       <dl className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <ScanStat
+          label="Realized profit"
+          value={usd(account.pnl)}
+          hint="Settled on the exchange"
+          tone={account.pnl >= 0 ? "profit" : "loss"}
+        />
         <ScanStat label="Trades" value={trades.toLocaleString()} hint={done ? "Closed and liquidated" : "Scanning"} />
         <ScanStat label="Volume" value={"$" + compact(account.volume)} hint="All markets" />
         <ScanStat

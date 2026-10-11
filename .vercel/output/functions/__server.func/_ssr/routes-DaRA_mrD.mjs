@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-Bg2Ms9tR.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-DaRA_mrD.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -288,7 +288,7 @@ function TapeApp() {
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 												className: "text-center",
-												children: "PnL"
+												children: "Realized profit"
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 												className: "flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4",
@@ -359,8 +359,8 @@ function ThemeToggle() {
 		"aria-checked": dark,
 		"aria-label": dark ? "Switch to light mode" : "Switch to dark mode",
 		onClick: toggle,
-		className: "relative h-11 w-20 shrink-0 rounded-full border " + (dark ? "border-amber bg-amber" : "glass border-line"),
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute top-1 left-1 size-9 rounded-full shadow transition-transform duration-200 " + (dark ? "translate-x-9 bg-on-accent" : "bg-amber") })
+		className: "relative h-6 w-11 shrink-0 rounded-full border " + (dark ? "border-amber bg-amber" : "glass border-line"),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute top-0.5 left-0.5 size-5 rounded-full shadow transition-transform duration-200 " + (dark ? "translate-x-5 bg-on-accent" : "bg-amber") })
 	});
 }
 function WaterField() {
@@ -685,6 +685,12 @@ function WalletScan({ account, onClose }) {
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("dl", {
 				className: "mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3",
 				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
+						label: "Realized profit",
+						value: usd(account.pnl),
+						hint: "Settled on the exchange",
+						tone: account.pnl >= 0 ? "profit" : "loss"
+					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
 						label: "Trades",
 						value: trades.toLocaleString(),
