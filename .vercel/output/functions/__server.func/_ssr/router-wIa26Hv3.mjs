@@ -3,7 +3,7 @@ import { _ as createFileRoute, b as require_jsx_runtime, d as Scripts, f as Head
 import { t as TriangleAlert } from "../_libs/lucide-react.mjs";
 import { t as Analytics } from "../_libs/vercel__analytics.mjs";
 import { a as union, i as string, n as number, r as object, t as literal } from "../_libs/zod.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-CVoDemsu.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-wIa26Hv3.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var FALLBACK_MESSAGE = "An unexpected error occurred. Try reloading the page.";
@@ -331,7 +331,7 @@ function PreviewHostBridge() {
 	}, [router]);
 	return null;
 }
-var styles_default = "/assets/styles-BD0fk62U.css";
+var styles_default = "/assets/styles-BEsjcV6q.css";
 var Route$1 = createRootRoute({
 	head: () => ({
 		meta: [
@@ -389,7 +389,7 @@ var Route$1 = createRootRoute({
 		] })]
 	})
 });
-var $$splitComponentImporter = () => import("./routes-AUDYSsAu.mjs");
+var $$splitComponentImporter = () => import("./routes-C-IRQ1ZO.mjs");
 var rootRouteChildren = { IndexRoute: createFileRoute("/")({ component: lazyRouteComponent($$splitComponentImporter, "component") }).update({
 	id: "/",
 	path: "/",

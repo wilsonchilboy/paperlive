@@ -184,10 +184,7 @@ export function TapeApp() {
         <ul className="glass divide-y divide-line/40 rounded-xl border">
           <li className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-end gap-x-2 px-3 py-2 font-mono text-xs tracking-wide text-faint uppercase sm:gap-x-4 sm:px-4">
             <span className="pl-8">Wallet</span>
-            <span className="text-center leading-tight">
-              Real profit
-              <span className="mt-0.5 block text-[10px] font-normal tracking-normal normal-case">after fee</span>
-            </span>
+            <span className="text-center">Profit</span>
             <span className="flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4">
               <span className="sm:w-36 sm:text-right">$PAPER</span>
               <span className="sm:w-40 sm:text-right">$PAPER staked</span>
@@ -223,7 +220,7 @@ export function TapeApp() {
 
       <footer className="mt-10 border-t border-line pt-4 font-mono text-xs leading-relaxed text-faint">
         <p>
-          Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. Real profit is the exchange settled number: raw gain after the impact haircut, then minus the 2% win fee. $PAPER is not included, because it cannot be transferred or sold. $PAPER earned is the sum of
+          Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. Profit is the exchange settled number: raw gain after the impact haircut, then minus the 2% win fee. $PAPER is not included, because it cannot be transferred or sold. $PAPER earned is the sum of
           mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M,
           then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently
           has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL.
@@ -536,7 +533,7 @@ function WalletScan({ account, onClose }: { account: LiveAccount; onClose: () =>
       </div>
       <dl className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
         <ScanStat
-          label="Real profit"
+          label="Profit"
           value={usd(account.pnl)}
           hint="After the impact haircut and the 2% win fee. $PAPER is not added — it cannot be sold."
           tone={account.pnl >= 0 ? "profit" : "loss"}

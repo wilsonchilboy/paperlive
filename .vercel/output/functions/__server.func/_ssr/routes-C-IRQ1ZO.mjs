@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { b as require_jsx_runtime, q as require_react } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as TSS_SERVER_FUNCTION, r as getServerFnById, t as createServerFn } from "./ssr.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-AUDYSsAu.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-C-IRQ1ZO.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var createSsrRpc = (functionId) => {
@@ -286,12 +286,9 @@ function TapeApp() {
 												className: "pl-8",
 												children: "Wallet"
 											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-												className: "text-center leading-tight",
-												children: ["Real profit", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-													className: "mt-0.5 block text-[10px] font-normal tracking-normal normal-case",
-													children: "after fee"
-												})]
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-center",
+												children: "Profit"
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 												className: "flex flex-col items-end gap-0.5 sm:flex-row sm:justify-end sm:gap-4",
@@ -335,7 +332,7 @@ function TapeApp() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("footer", {
 				className: "mt-10 border-t border-line pt-4 font-mono text-xs leading-relaxed text-faint",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. Real profit is the exchange settled number: raw gain after the impact haircut, then minus the 2% win fee. $PAPER is not included, because it cannot be transferred or sold. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL." })
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Volume, liquidations, trades, users, rewards, and TVL are the stats page totals. Profit is the exchange settled number: raw gain after the impact haircut, then minus the 2% win fee. $PAPER is not included, because it cannot be transferred or sold. $PAPER earned is the sum of mints on losing closes: 98% of each loss (a 2% peel), at 100 PAPER per $1 while tracked LP is under $2M, then 100 × (120M / (120M + tail))². Wins mint nothing. $PAPER staked is what that wallet currently has in the staking contract. Open shows how many trades are still open, their notional, and unrealized PnL." })
 			})
 		]
 	});
@@ -694,7 +691,7 @@ function WalletScan({ account, onClose }) {
 				className: "mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanStat, {
-						label: "Real profit",
+						label: "Profit",
 						value: usd(account.pnl),
 						hint: "After the impact haircut and the 2% win fee. $PAPER is not added — it cannot be sold.",
 						tone: account.pnl >= 0 ? "profit" : "loss"
